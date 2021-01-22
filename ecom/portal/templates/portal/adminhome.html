@@ -1,0 +1,72 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+{% block title %}Register{% endblock %}
+{% block css %}
+
+{% endblock %}
+{% block content %}
+<div id="all">
+    <div id="content">
+        <div id="advantages">
+            <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                <div class="box  d-flex flex-column justify-content-center mb-0 h-100">
+                    <h3>Admin Users</h3>
+                    <p class="mb-0">View and manage Admin users</p>
+                    <a href="/adminlist/" class="btn btn-primary navbar-btn" data-toggle="tooltip" data-placement="top" title="Feature not added"><i class=""></i><span>Click Here</span></a>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="box  d-flex flex-column justify-content-center mb-0 h-100">
+                    <h3>Products</h3>
+                    <p class="mb-0">View and manage products</p>
+                    <a href="/productlist/" class="btn btn-primary navbar-btn"><i class=""></i><span>Click Here</span></a>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="box  d-flex flex-column justify-content-center mb-0 h-100">
+                    <h3>Profile</h3>
+                    <p class="mb-0">View and manage profile</p>
+                    <a href="/adminprofile/" class="btn btn-primary navbar-btn"><i class=""></i><span>Click Here</span></a>
+                </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                <div class="box  d-flex flex-column justify-content-center mb-0 h-100">
+                    <h3>Categories</h3>
+                    <p class="mb-0">View and manage product categories</p>
+                    <a href="/productcategory/" class="btn btn-primary navbar-btn" ><i class=""></i><span>Click Here</span></a>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="box  d-flex flex-column justify-content-center mb-0 h-100">
+                    <h3>Orders</h3>
+                    <p class="mb-0">View and manage orders</p>
+                    <a href="/manageorders/" class="btn btn-primary navbar-btn"><i class=""></i><span>Click Here</span></a>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="box  d-flex flex-column justify-content-center mb-0 h-100">
+                    <h3>Profile</h3>
+                    <p class="mb-0">View and manage profile</p>
+                    <a href="#" class="btn btn-primary navbar-btn" hidden><i class=""></i><span>Click Here</span></a>
+                </div>
+                </div>
+            </div>
+        <!-- /.row-->
+        </div>
+        <!-- /.container-->
+        </div>
+    </div>
+</div>
+
+{% endblock%}
+
+{% block script %}
+<script>
+     
+</script>
+{% endblock %}
