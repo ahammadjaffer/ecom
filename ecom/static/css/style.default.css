@@ -2545,7 +2545,7 @@ select.form-control:focus::-ms-value {
   background-color: #fff;
 }
 
-.form-control-sm {
+/* .form-control-sm {
   padding: 0.25rem 0.5rem;
   font-size: 0.738rem;
   line-height: 1.5;
@@ -2554,7 +2554,7 @@ select.form-control:focus::-ms-value {
 
 select.form-control-sm:not([size]):not([multiple]) {
   height: calc(1.607rem + 2px);
-}
+} */
 
 .form-control-lg {
   padding: 0.5rem 1rem;

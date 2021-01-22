@@ -225,36 +225,39 @@ def deletecategory(request):
 
 def manageorders(request):
     try:
-        orders = Order.objects.filter(status=1)
-        context = {'orders': orders}
+        context = {}
         return render(request, 'portal/manageorders.html', context)
     except Exception as e:
         messages.success(request, 'Error: Could not load manage order page. Reason:- '+ str(e))
 
 def pendingorders(request):
     try:
-        context = {}
+        orders = Order.objects.filter(status=1)
+        context = {'orders': orders}
         return render(request, 'portal/pendingorders.html', context)
     except Exception as e:
         messages.success(request, 'Error: Could not load pending orders page. Reason:- '+ str(e))
 
 def ordersindelivery(request):
     try:
-        context = {}
+        orders = Order.objects.filter(status=2)
+        context = {'orders': orders}
         return render(request, 'portal/ordersindelivery.html', context)
     except Exception as e:
         messages.success(request, 'Error: Could not load orders indelivery page. Reason:- '+ str(e))
 
 def deliveredorders(request):
     try:
-        context = {}
+        orders = Order.objects.filter(status=3)
+        context = {'orders': orders}
         return render(request, 'portal/deliveredorders.html', context)
     except Exception as e:
         messages.success(request, 'Error: Could not load delivered orders page. Reason:- '+ str(e))
 
 def cancelledorders(request):
     try:
-        context = {}
+        orders = Order.objects.filter(status=4)
+        context = {'orders': orders}
         return render(request, 'portal/cancelledorders.html', context)
     except Exception as e:
         messages.success(request, 'Error: Could not load cancelled orders page. Reason:- '+ str(e))

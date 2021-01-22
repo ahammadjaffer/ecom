@@ -67,10 +67,12 @@ class Order(models.Model):
     orderdate = models.DateTimeField(auto_now=True)
     enddate = models.DateTimeField(auto_now=False, null=True)
     billeddate = models.DateTimeField(auto_now=False, null=True)
+    orderaccepteddate = models.DateTimeField(auto_now=False, null=True)
     status = models.IntegerField(blank=False, null=False)
     isfulfilled = models.IntegerField(blank=False, null=False)
     isdeleted =  models.IntegerField(blank=False, null=False)
     paymentmode =  models.IntegerField(blank=False, null=False)
+    deliveredaddress = models.TextField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         return self.orderid
