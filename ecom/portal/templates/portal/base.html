@@ -37,12 +37,16 @@
             color: #ffffff;
           }
           #footer{
-            background-color: #F0F8FF;
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            /* background-color: #F0F8FF; */
             color: #000000;
           }
           #copyright{
             background-color: #1F75FE;
             color: #ffffff;
+          }
+          .modalheadercolor{
+            background-color: #1F75FE;
           }
 
         </style>
@@ -304,7 +308,7 @@
     *** FOOTER ***
     _________________________________________________________
     -->
-    <div id="footer">
+    <div id="footer" class="mt-5">
       <div class="container">
         <div class="row">
           {% if not user.is_authenticated %}
