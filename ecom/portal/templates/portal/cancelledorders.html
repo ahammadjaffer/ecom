@@ -29,7 +29,7 @@
                 <tbody>
                     {% for order in orders %}
                     <tr>
-                        <td><a href="javascript:void(0)" data-toggle="modal" data-target="#updatemodal" onclick="loadupdatemodal({{order.id}})">{{order.orderid}}</a></td>
+                        <td><a href="javascript:void(0)" data-toggle="modal" data-target="#updatemodal" onclick="loadupdatemodal({{order.id}})">{{order.id}}</a></td>
                         <td>{{order.orderdate}}</td>
                         <td>{{order.enddate}}</td>
                         <td>{{order.grandtotal}}</td>
@@ -40,20 +40,194 @@
         </div>
     </div>
 </div>
+<!-- cancelled order -->
+<div class="modal fade bd-example-modal-lg" id="updatemodal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content  pr-3">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Cancelled Order Detail</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" id="form_orderindelivery" enctype="multipart/form-data">
+                    {% csrf_token %}
+                  <div class="form-group ">
+                      <label for="orderid" class="col-form-label ">OrderId</label>
+                      <!-- <label for="name" id="productid" class="col-form-label"></label> -->
+                      <input type="text" class="form-control  col-sm-12 col-md-6" id="orderid" name="orderid" disabled style="border:none;">
+                  </div>
+                  <div class="form-group ">
+                      <label for="customername" class="col-form-label ">Customer Name</label>
+                      <!-- <label for="name" id="customername" class="col-form-label"></label> -->
+                      <input type="text" class="form-control  col-sm-12 col-md-6" id="customername" name="customername" disabled style="border:none;">
+                  </div>
+                  <div class="row">
+                      <div class="col">
+                          <div class="form-group ">
+                              <label for="orderdate" class="col-form-label">Order Date</label>
+                              <!-- <label for="category" id="orderdate" class="col-form-label"></label> -->
+                              <input type="text" class="form-control " id="orderdate" name="orderdate" autocomplete="off"  disabled style="border:none;">
+                          </div>
+                      </div>
+                      <div class="col">
+                          <div class="form-group ">
+                              <label for="accepteddate" class="col-form-label ">Accepted Date</label>
+                              <!-- <label for="count" id="paymentmode" class="col-form-label"></label> -->
+                              <input type="text" class="form-control " id="accepteddate" name="accepteddate" autocomplete="off"  disabled style="border:none;">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col">
+                          <div class="form-group ">
+                              <label for="paymentmode" class="col-form-label ">Payment Mode</label>
+                              <!-- <label for="count" id="paymentmode" class="col-form-label"></label> -->
+                              <input type="text" class="form-control col-sm-12 " id="paymentmode" name="paymentmode" autocomplete="off"  disabled style="border:none;">
+                          </div>
+                      </div>
+                      <div class="col">
+                          <div class="form-group ">
+                              <label for="deliverystatus" class="col-form-label ">Delivery Status</label>
+                              <!-- <label for="count" id="paymentmode" class="col-form-label"></label> -->
+                              <input type="text" class="form-control " id="deliverystatus" name="deliverystatus" autocomplete="off"  disabled style="border:none;">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col">
+                          <div class="form-group ">
+                              <label for="total" class="col-form-label ">Total</label>
+                              <!-- <label for="price" id="total" class="col-form-label"></label> -->
+                              <input type="text" class="form-control" id="total" name="total" autocomplete="off"  disabled style="border:none;">
+                          </div>
+                      </div>
+                      <div class="col">
+                          <div class="form-group ">
+                              <label for="email" class="col-form-label ">Email</label>
+                              <!-- <label for="shippingcharge" id="email" class="col-form-label"></label> -->
+                              <input type="text" class="form-control " id="email" name="email" autocomplete="off"  disabled style="border:none;">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col">
+                          <div class="form-group ">
+                              <label for="address" class="col-form-label ">Address</label>
+                              <!-- <label for="shippingcharge" id="address" class="col-form-label"></label> -->
+                              <!-- <input type="text" class="form-control" id="address" name="address" autocomplete="off"  disabled style="border:none;"> -->
+                              <textarea id="address" name="address" class="form-control  col col-sm-12 col-md-6" disabled style="border:none;"></textarea>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col">
+                          <div class="form-group ">
+                              <label for="phone" class="col-form-label">Phone</label>
+                              <!-- <label for="price" id="phone" class="col-form-label"></label> -->
+                              <input type="text" class="form-control" id="phone" name="phone" autocomplete="off"  disabled style="border:none;">
+                          </div>
+                      </div>
+                      <div class="col">
+                          <div class="form-group ">
+                              <label for="pincode" class="col-form-label ">PinCode</label>
+                              <!-- <label for="shippingcharge" id="pincode" class="col-form-label"></label> -->
+                              <input type="text" class="form-control  " id="pincode" name="pincode" autocomplete="off"  disabled style="border:none;">
+                          </div>
+                      </div>
+                  </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group ">
+                                <label for="cancelleddate" class="col-form-label">Cancelled Date</label>
+                                <!-- <label for="category" id="orderdate" class="col-form-label"></label> -->
+                                <input type="text" class="form-control  col-sm-12 col-md-6" id="cancelleddate" name="cancelleddate" autocomplete="off"  disabled style="border:none;">
+                            </div>
+                        </div>
+                    </div>
+                  <table id="datatable" class="table table-sm dt-responsive nowrap" style="width:100%">
+                      <thead>
+                          <tr>
+                              <th scope="col">Product Name</th>
+                              <th scope="col">Quantity</th>
+                              <th scope="col">Price</th>
+                              <th scope="col">Shipping Charge</th>
+                          </tr>
+                      </thead>
+                      <tbody id="datatablebody">
+                          
+                      </tbody>
+                  </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+    </div>
+</div>
 {% endblock%}
 
 {% block script %}
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#datatable').DataTable();
-    document.getElementById('pro-image').addEventListener('change', readImage, false);
-    
-    // $( ".preview-images-zone" ).sortable();
-    
-    $(document).on('click', '.image-cancel', function() {
-        let no = $(this).data('no');
-        $(".preview-image.preview-show-"+no).remove();
-    });
-} );
-</script>
+    $(document).ready(function() {
+        $('#datatable').DataTable();
+    } );
+    $('#myModal').on('shown.bs.modal', function () {
+      $('#myInput').trigger('focus')
+    })
+    // delivered order modal load
+    function loadupdatemodal(orderid){
+            $.ajax(
+            {
+                type:"GET",
+                url: "/cancelledorderdetails",
+                data:{
+                    orderid: orderid
+                },
+                success: function( data )
+                {
+                    var fields = data["instance"];
+                    var orderdetailsjson = data["orderdetailsjson"];
+                    $.each(fields, function(key,value) {
+                        if(value['paymentmode']==1){
+                            paymentmode='Cash On Delivery'
+                        }
+                        else{
+                            paymentmode='Other'
+                        }
+                        if(value['deliverystatus']==4){
+                        deliverystatus = "Cancelled";
+                    }
+                    else{
+                        deliverystatus = "Not available";
+                    }
+                        $('#orderid').val(value['id']);
+                        $('#customername').val(value['customername']);
+                        $('#orderdate').val(value['orderdate']);
+                        $('#paymentmode').val(paymentmode);
+                        $('#total').val(value['grandtotal']+' ₹');
+                        $('#email').val(value['email']);
+                        $('#phone').val(value['phonenumber']);
+                        $('#address').val(value['address']);
+                        $('#pincode').val(value['pincode']);
+                        $('#deliverystatus').val(deliverystatus);
+                        $('#accepteddate').val(value['orderaccepteddate']);
+                        $('#cancelleddate').val(value['enddate']);
+                    });
+                    str = '';
+                    $.each(orderdetailsjson, function(key,value) {
+                        str = str+'<tr>';
+                        str = str+'<td><a href="javascript:void(0)" data-toggle="modal" data-target="#updatemodal">'+value.productname+'</a></td>';
+                        str = str+'<td>'+value.quantity+'</td>';
+                        str = str+'<td>'+value.producttotal+' ₹</td>';
+                        str = str+'<td>'+value.shippingcharge+'</td>';
+                        str = str+'</tr>';
+                    });
+                    document.getElementById('datatablebody').innerHTML = str;
+                }
+            })
+        }
+    </script>
 {% endblock %}

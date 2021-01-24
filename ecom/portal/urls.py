@@ -20,10 +20,16 @@ urlpatterns = [
     path('updatecategory/', adminview.updatecategory, name='updatecategory'),
     path('deletecategory/', adminview.deletecategory, name='deletecategory'),
     path('manageorders/', adminview.manageorders, name='manageorders'),
-
     path('pendingorders/', adminview.pendingorders, name='pendingorders'),
     path('ordersindelivery/', adminview.ordersindelivery, name='ordersindelivery'),
     path('deliveredorders/', adminview.deliveredorders, name='deliveredorders'),
     path('cancelledorders/', adminview.cancelledorders, name='cancelledorders'),
+    path('pendingorderdetails/', adminview.pendingorderdetails, name='pendingorderdetails'),
+    path('acceptpendingorder/', adminview.acceptpendingorder, name='acceptpendingorder'),
+    path('orderindeliverydetails/', adminview.orderindeliverydetails, name='orderindeliverydetails'),
+    path('billorderbyadmin/', adminview.billorderbyadmin, name='billorderbyadmin'),
+    path('cancelorderbyadmin/', adminview.cancelorderbyadmin, name='cancelorderbyadmin'),
+    path('deliveredorderdetails/', adminview.deliveredorderdetails, name='deliveredorderdetails'),
+    path('cancelledorderdetails/', adminview.cancelledorderdetails, name='cancelledorderdetails'),
 
 ]

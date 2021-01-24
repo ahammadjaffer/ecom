@@ -61,7 +61,7 @@ class Category(models.Model):
         return self.name
 
 class Order(models.Model):
-    orderid = models.CharField(max_length=50, null=False)
+    orderid = models.CharField(max_length=50, null=True)
     clientid = models.ForeignKey(User, on_delete=models.CASCADE)
     grandtotal = models.IntegerField(blank=False, null=False)
     orderdate = models.DateTimeField(auto_now=True)
@@ -69,13 +69,12 @@ class Order(models.Model):
     billeddate = models.DateTimeField(auto_now=False, null=True)
     orderaccepteddate = models.DateTimeField(auto_now=False, null=True)
     status = models.IntegerField(blank=False, null=False)
-    isfulfilled = models.IntegerField(blank=False, null=False)
-    isdeleted =  models.IntegerField(blank=False, null=False)
-    paymentmode =  models.IntegerField(blank=False, null=False)
+    isfulfilled = models.IntegerField(blank=True, null=True)
+    isdeleted =  models.IntegerField(blank=True, null=True)
+    paymentmode =  models.IntegerField(blank=True, null=True)
     deliveredaddress = models.TextField(max_length=500, blank=True, null=True)
 
-    def __str__(self):
-        return self.orderid
+    
     
 class OrderDetails(models.Model):
     orderid = models.ForeignKey(Order, on_delete=models.CASCADE)

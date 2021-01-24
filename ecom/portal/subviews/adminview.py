@@ -261,3 +261,166 @@ def cancelledorders(request):
         return render(request, 'portal/cancelledorders.html', context)
     except Exception as e:
         messages.success(request, 'Error: Could not load cancelled orders page. Reason:- '+ str(e))
+
+def pendingorderdetails(request):
+    if request.method == 'GET':
+        data = []
+        ordertemp = {}
+        orderdetailsjson = []
+        orderid = request.GET['orderid']
+        details = Order.objects.filter(id=orderid).select_related('clientid_id').values()
+        for detail in details:
+            orderdetails = OrderDetails.objects.filter(orderid_id=detail['id']).values()
+            for orderdetail in orderdetails:
+                productdetails = Products.objects.filter(id=orderdetail['productid_id']).values()[0]
+                orderdetail['productname']=productdetails['name']
+                orderdetail['shippingcharge']=productdetails['shipmentcharge']
+                orderdetailsjson.append(orderdetail)
+            clientdetail = User.objects.filter(id=detail['clientid_id'])[0]
+            ordertemp['id'] = detail['id']
+            ordertemp['paymentmode'] = detail['paymentmode']
+            ordertemp['orderdate'] = detail['orderdate']
+            ordertemp['grandtotal'] = detail['grandtotal']
+            ordertemp['customername'] = clientdetail.first_name+' '+clientdetail.last_name
+            ordertemp['email'] = clientdetail.email
+            ordertemp['phonenumber'] = clientdetail.profile.phonenumber
+            ordertemp['address'] = clientdetail.profile.address1
+            ordertemp['pincode'] = clientdetail.profile.pincode
+        data.append(ordertemp)
+        return JsonResponse({"instance": data, "orderdetailsjson": orderdetailsjson}, status=200)
+
+def acceptpendingorder(request):
+    if request.method == 'GET':
+        orderid = request.GET['orderid']
+        try:
+            product = Order.objects.get(id=orderid)
+            product.status=2
+            product.orderaccepteddate=datetime.now()
+            product.save()
+            messages.success(request, 'Order accepted succesfully')
+        except Exception as e:
+            messages.success(request, 'Error: Order accepting failed. Reason:- '+ str(e))
+        return JsonResponse({"orderid": orderid}, status=200)
+
+def orderindeliverydetails(request):
+    if request.method == 'GET':
+        data = []
+        ordertemp = {}
+        orderdetailsjson = []
+        orderid = request.GET['orderid']
+        details = Order.objects.filter(id=orderid).select_related('clientid_id').values()
+        for detail in details:
+            orderdetails = OrderDetails.objects.filter(orderid_id=detail['id']).values()
+            for orderdetail in orderdetails:
+                productdetails = Products.objects.filter(id=orderdetail['productid_id']).values()[0]
+                orderdetail['productname']=productdetails['name']
+                orderdetail['shippingcharge']=productdetails['shipmentcharge']
+                orderdetailsjson.append(orderdetail)
+            clientdetail = User.objects.filter(id=detail['clientid_id'])[0]
+            ordertemp['id'] = detail['id']
+            ordertemp['paymentmode'] = detail['paymentmode']
+            ordertemp['orderdate'] = detail['orderdate']
+            ordertemp['orderaccepteddate'] = detail['orderaccepteddate']
+            ordertemp['grandtotal'] = detail['grandtotal']
+            ordertemp['deliverystatus'] = detail['status']
+            ordertemp['customername'] = clientdetail.first_name+' '+clientdetail.last_name
+            ordertemp['email'] = clientdetail.email
+            ordertemp['phonenumber'] = clientdetail.profile.phonenumber
+            ordertemp['address'] = clientdetail.profile.address1
+            ordertemp['pincode'] = clientdetail.profile.pincode
+        data.append(ordertemp)
+        return JsonResponse({"instance": data, "orderdetailsjson": orderdetailsjson}, status=200)
+
+def billorderbyadmin(request):
+    if request.method == 'GET':
+        orderid = request.GET['orderid']
+        isfulfilled = request.GET['isfulfilled']
+        deliveredaddress = request.GET['deliveredaddress']
+        if(isfulfilled):
+            isfulfilled=1
+        try:
+            product = Order.objects.get(id=orderid)
+            product.status=3
+            product.isfulfilled=isfulfilled
+            product.deliveredaddress=deliveredaddress
+            product.billeddate=datetime.now()
+            product.save()
+            messages.success(request, 'Order billed succesfully')
+        except Exception as e:
+            messages.success(request, 'Error: Order billing failed. Reason:- '+ str(e))
+        return JsonResponse({"orderid": orderid}, status=200)
+
+def cancelorderbyadmin(request):
+    if request.method == 'GET':
+        orderid = request.GET['orderid']
+        try:
+            product = Order.objects.get(id=orderid)
+            product.status=4
+            product.isdeleted=1
+            product.enddate=datetime.now()
+            product.save()
+            messages.success(request, 'Order cancelled succesfully')
+        except Exception as e:
+            messages.success(request, 'Error: Order cancelling failed. Reason:- '+ str(e))
+        return JsonResponse({"orderid": orderid}, status=200)
+
+def deliveredorderdetails(request):
+    if request.method == 'GET':
+        data = []
+        ordertemp = {}
+        orderdetailsjson = []
+        orderid = request.GET['orderid']
+        details = Order.objects.filter(id=orderid).select_related('clientid_id').values()
+        for detail in details:
+            orderdetails = OrderDetails.objects.filter(orderid_id=detail['id']).values()
+            for orderdetail in orderdetails:
+                productdetails = Products.objects.filter(id=orderdetail['productid_id']).values()[0]
+                orderdetail['productname']=productdetails['name']
+                orderdetail['shippingcharge']=productdetails['shipmentcharge']
+                orderdetailsjson.append(orderdetail)
+            clientdetail = User.objects.filter(id=detail['clientid_id'])[0]
+            ordertemp['id'] = detail['id']
+            ordertemp['paymentmode'] = detail['paymentmode']
+            ordertemp['orderdate'] = detail['orderdate']
+            ordertemp['orderaccepteddate'] = detail['orderaccepteddate']
+            ordertemp['billeddate'] = detail['billeddate']
+            ordertemp['grandtotal'] = detail['grandtotal']
+            ordertemp['deliverystatus'] = detail['status']
+            ordertemp['deliveredaddress'] = detail['deliveredaddress']
+            ordertemp['customername'] = clientdetail.first_name+' '+clientdetail.last_name
+            ordertemp['email'] = clientdetail.email
+            ordertemp['phonenumber'] = clientdetail.profile.phonenumber
+            ordertemp['address'] = clientdetail.profile.address1
+            ordertemp['pincode'] = clientdetail.profile.pincode
+        data.append(ordertemp)
+        return JsonResponse({"instance": data, "orderdetailsjson": orderdetailsjson}, status=200)
+
+def cancelledorderdetails(request):
+    if request.method == 'GET':
+        data = []
+        ordertemp = {}
+        orderdetailsjson = []
+        orderid = request.GET['orderid']
+        details = Order.objects.filter(id=orderid).select_related('clientid_id').values()
+        for detail in details:
+            orderdetails = OrderDetails.objects.filter(orderid_id=detail['id']).values()
+            for orderdetail in orderdetails:
+                productdetails = Products.objects.filter(id=orderdetail['productid_id']).values()[0]
+                orderdetail['productname']=productdetails['name']
+                orderdetail['shippingcharge']=productdetails['shipmentcharge']
+                orderdetailsjson.append(orderdetail)
+            clientdetail = User.objects.filter(id=detail['clientid_id'])[0]
+            ordertemp['id'] = detail['id']
+            ordertemp['paymentmode'] = detail['paymentmode']
+            ordertemp['orderdate'] = detail['orderdate']
+            ordertemp['orderaccepteddate'] = detail['orderaccepteddate']
+            ordertemp['enddate'] = detail['enddate']
+            ordertemp['grandtotal'] = detail['grandtotal']
+            ordertemp['deliverystatus'] = detail['status']
+            ordertemp['customername'] = clientdetail.first_name+' '+clientdetail.last_name
+            ordertemp['email'] = clientdetail.email
+            ordertemp['phonenumber'] = clientdetail.profile.phonenumber
+            ordertemp['address'] = clientdetail.profile.address1
+            ordertemp['pincode'] = clientdetail.profile.pincode
+        data.append(ordertemp)
+        return JsonResponse({"instance": data, "orderdetailsjson": orderdetailsjson}, status=200)

@@ -39,7 +39,10 @@
           #footer{
             background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
             /* background-color: #F0F8FF; */
-            color: #000000;
+            color: #fffaf0;
+          }
+          .footerButton{
+            color: #fffaf0;
           }
           #copyright{
             background-color: #1F75FE;
@@ -47,6 +50,12 @@
           }
           .modalheadercolor{
             background-color: #1F75FE;
+          }
+          nav-link:hover{
+            color: #fffaf0;
+          }
+          a:active{
+            color: #fffaf0;
           }
 
         </style>
@@ -276,6 +285,57 @@
                   </li>
                 </ul>
               </li>
+              {% else %}
+              <!-- profiles -->
+              <li class="nav-item dropdown menu-md"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="dropdown-toggle nav-link">Profiles<b class="caret"></b></a>
+                <ul class="dropdown-menu mt-0">
+                  <li>
+                    <div class="row">
+                      <div class="col-md-12 col-lg-12">
+                        <!-- <h5>Clothing</h5> -->
+                        <ul class="list-unstyled mb-3">
+                          <li class="dropdown-item"><a href="/adminprofile/" class="nav-link">My Profile</a></li>
+                          <li class="dropdown-item"><a href="/adminlist/" class="nav-link">Admin Users</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <!-- products -->
+              <li class="nav-item dropdown menu-md"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="dropdown-toggle nav-link">Products<b class="caret"></b></a>
+                <ul class="dropdown-menu mt-0">
+                  <li>
+                    <div class="row">
+                      <div class="col-md-12 col-lg-12">
+                        <!-- <h5>Clothing</h5> -->
+                        <ul class="list-unstyled mb-3">
+                          <li class="dropdown-item"><a href="/productcategory/" class="nav-link">Categories</a></li>
+                          <li class="dropdown-item"><a href="/productlist/" class="nav-link">Products</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <!-- orders -->
+              <li class="nav-item dropdown menu-md"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="dropdown-toggle nav-link">Orders<b class="caret"></b></a>
+                <ul class="dropdown-menu mt-0">
+                  <li>
+                    <div class="row">
+                      <div class="col-md-12 col-lg-12">
+                        <h5><a href="/manageorders/" class="nav-link">Manage Orders</a></h5><hr>
+                        <ul class="list-unstyled mb-3">
+                          <li class="dropdown-item"><a href="/pendingorders/" class="nav-link">Pending Orders</a></li>
+                          <li class="dropdown-item"><a href="/ordersindelivery/" class="nav-link">Orders In Delivery</a></li>
+                          <li class="dropdown-item"><a href="/deliveredorders/" class="nav-link">Delivered Orders</a></li>
+                          <li class="dropdown-item"><a href="/cancelledorders/" class="nav-link">Cancelled Orders</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
               {% endif %}
             </ul>
             {% if not user.is_authenticated %}
@@ -353,7 +413,7 @@
           <!-- /.col-lg-3-->
           <div class="col-lg-3 col-md-6">
             <h4 class="mb-3">Get the news</h4>
-            <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+            <p class="footerButton">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
             <form>
               <div class="input-group">
                 <input type="text" class="form-control"><span class="input-group-append">
@@ -364,6 +424,32 @@
             <hr>
             <h4 class="mb-3">Stay in touch</h4>
             <p class="social"><a href="#" class="facebook external"><i class="fa fa-facebook"></i></a><a href="#" class="twitter external"><i class="fa fa-twitter"></i></a><a href="#" class="instagram external"><i class="fa fa-instagram"></i></a><a href="#" class="gplus external"><i class="fa fa-google-plus"></i></a><a href="#" class="email external"><i class="fa fa-envelope"></i></a></p>
+          </div>
+          {% else %}
+          <div class="col-lg-3 col-md-6">
+            <h4 class="mb-3">Profiles</h4>
+            <ul class="list-unstyled">
+              <li><a href="/adminprofile/">My Profile</a></li>
+              <li><a href="/adminlist/">Admin Users</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <h4 class="mb-3">Products</h4>
+            <ul class="list-unstyled">
+              <li><a href="/productcategory/" data-toggle="modal" data-target="#login-modal">Categories</a></li>
+              <li><a href="/productlist/">Products</a></li>
+            </ul>
+          </div>
+          <!-- /.col-lg-3-->
+          <div class="col-lg-3 col-md-6">
+            <h4 class="mb-3">Orders</h4>
+            <h5><a href="/manageorders/" class="">Manage Orders</a></h5>
+            <ul class="list-unstyled">
+              <li><a href="/pendingorders/">Pending Orders</a></li>
+              <li><a href="/ordersindelivery/">Orders In Delivery</a></li>
+              <li><a href="/deliveredorders/">Delivered Orders</a></li>
+              <li><a href="/cancelledorders/">Cancelled Orders</a></li>
+            </ul>  
           </div>
           {% endif %}
           <!-- /.col-lg-3-->
@@ -384,12 +470,14 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-6 mb-2 mb-lg-0">
-            <p class="text-center text-lg-left">©2019 Your name goes here.</p>
+            <p class="text-center text-lg-left">©2021 Kinsfolk.</p>
           </div>
-          <div class="col-lg-6">
-            <p class="text-center text-lg-right">Template design by <a href="https://bootstrapious.com/">Bootstrapious</a>
-              <!-- If you want to remove this backlink, pls purchase an Attribution-free License @ https://bootstrapious.com/p/obaju-e-commerce-template. Big thanks!-->
-            </p>
+          <div style="display: none;">
+            <div class="col-lg-6">
+              <p class="text-center text-lg-right">Template design by <a href="https://bootstrapious.com/">Bootstrapious</a>
+                <!-- If you want to remove this backlink, pls purchase an Attribution-free License @ https://bootstrapious.com/p/obaju-e-commerce-template. Big thanks!-->
+              </p>
+            </div>
           </div>
         </div>
       </div>
