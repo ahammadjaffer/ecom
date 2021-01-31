@@ -553,12 +553,16 @@ pre code {
   .container {
     max-width: 540px;
   }
+  /* .img-fluid {
+    max-width: 100%;
+    height: auto;
+  } */
 }
 
 @media (min-width: 768px) {
   .container {
     max-width: 720px;
-  }
+  } 
 }
 
 @media (min-width: 992px) {
@@ -569,7 +573,8 @@ pre code {
 
 @media (min-width: 1200px) {
   .container {
-    max-width: 1140px;
+    max-width: 1500px;
+    /* max-width: 1140px; */
   }
 }
 
@@ -601,7 +606,8 @@ pre code {
 
 @media (min-width: 1200px) {
   .container, .container-sm, .container-md, .container-lg, .container-xl {
-    max-width: 1140px;
+    /* max-width: 1140px; */
+    max-width: 1500px;
   }
 }
 
@@ -4294,7 +4300,8 @@ input[type="button"].btn-block {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: #007bff;
+  /* background-color: #007bff; */
+  background-color: #ff5d17;
 }
 
 .nav-fill .nav-item {

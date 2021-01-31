@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .subviews import adminview
+from .subviews import adminview, portalview
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -31,5 +31,6 @@ urlpatterns = [
     path('cancelorderbyadmin/', adminview.cancelorderbyadmin, name='cancelorderbyadmin'),
     path('deliveredorderdetails/', adminview.deliveredorderdetails, name='deliveredorderdetails'),
     path('cancelledorderdetails/', adminview.cancelledorderdetails, name='cancelledorderdetails'),
+    path('viewallproducts/', portalview.viewallproducts, name='viewallproducts'),
 
 ]
