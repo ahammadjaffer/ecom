@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .subviews import adminview, portalview
+from .subviews import adminview, portalview, adminpanelview
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -32,5 +32,8 @@ urlpatterns = [
     path('deliveredorderdetails/', adminview.deliveredorderdetails, name='deliveredorderdetails'),
     path('cancelledorderdetails/', adminview.cancelledorderdetails, name='cancelledorderdetails'),
     path('viewallproducts/', portalview.viewallproducts, name='viewallproducts'),
+
+    # new admin pages
+    path('dashboard/', adminpanelview.dashboard, name='dashboard'),
 
 ]
