@@ -1,0 +1,164 @@
+{% extends 'portal/admin/base.html' %}
+{% load static %}
+{% block css %}
+{% endblock %}
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% for message in messages %}
+                            <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS%}alert-success{% elif message.level == DEFAULT_MESSAGE_WARNING.SUCCESS%}alert-warning{% endif %}" role="alert">
+                                {{message}}
+                            </div>
+                        {% endfor %}
+                        <div class="box">
+                            <h1>My account</h1>
+                            <p class="lead">Change your personal details or your password here.</p>
+                            <h3>Change password</h3>
+                            <form id="changepassword" action="/changepassword/" method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                        <label for="password_old">Old password</label>
+                                        <input id="password_old" name="password_old" type="password" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="password_1">New password</label>
+                                            <input id="password_1" name="password_1" type="password" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="password_2">Retype new password</label>
+                                            <input id="password_2" name="password_2" type="password" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="button" id="save" class="btn btn-primary"><i class="fa fa-save"></i> Save new password</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <h3 class="mt-5">Personal details</h3>
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="firstname">Firstname</label>
+                                            <input id="firstname" name="firstname" type="text" class="form-control" value="{{user.first_name}}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="lastname">Lastname</label>
+                                            <input id="lastname" name="lastname" type="text" class="form-control" value="{{user.last_name}}" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if user.is_authenticated and not user.is_superuser %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="address1">Address 1</label>
+                                            <textarea id="address1" name="address1" class="form-control" >{{profiledata.address1}}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="address2">Address 2</label>
+                                            <textarea id="address2" name="address2" class="form-control" >{{profiledata.address2}}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row-->
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="form-group">
+                                            <label for="pincode">Pincode</label>
+                                            <input id="pincode" name="pincode" type="text" class="form-control" value="{{profiledata.pincode}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="form-group">
+                                            <label for="state">State</label>
+                                            <select id="state" class="form-control" disabled></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="form-group">
+                                            <label for="country">Country</label>
+                                            <select id="country" class="form-control" disabled></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <!-- /.row-->
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input id="phone" name="phone" type="number" class="form-control" value="{{profiledata.phonenumber}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input id="email" name="email" type="email" class="form-control" value="{{user.email}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save changes</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+{% endblock%}
+
+{% block script %}
+<script type="text/javascript">
+$( document ).ready(function() {
+  $('#save').click(function(){
+        passowrd1 = $('#password_1').val();
+        passowrd2 = $('#password_2').val();
+        if(passowrd1!=passowrd2){
+            alert("Password and Confirm Password do not match!");
+        }
+        else if(CheckPassword(passowrd1)){
+              document.getElementById("changepassword").submit();
+        }
+    });
+
+  function CheckPassword(inputtxt) 
+  { 
+    var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+    if(inputtxt.match(passw)) 
+    { 
+      return true;
+    }
+    else
+    { 
+      alert('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter');
+      return false;
+    }
+  }
+});
+
+</script>
+{% endblock %}

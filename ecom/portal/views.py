@@ -26,7 +26,7 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 if (user.is_superuser):
-                    return redirect('admin_home')
+                    return redirect('dashboard')
                 else:
                     return redirect('home')
             else:
