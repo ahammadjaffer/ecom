@@ -48,10 +48,15 @@
         <div class="nav-header">
             <div class="brand-logo">
                 <a href="/dashboard/">
-                    <b class="logo-abbr"><img src="{% static 'dashboard/images/logo.png' %}" alt=""> </b>
+                    <!-- <b class="logo-abbr"><img src="{% static 'dashboard/images/logo.png' %}" alt=""> </b>
                     <span class="logo-compact"><img src="{% static 'dashboard/images/logo-compact.png' %}" alt=""></span>
                     <span class="brand-title">
                         <img src="{% static 'dashboard/images/logo-text.png' %}" alt="">
+                    </span> -->
+                    <b class="logo-abbr"><img src="{{data.imageURL}}" alt=""> </b>
+                    <span class="logo-compact"><img src="{{data.imageURL}}" alt=""></span>
+                    <span class="brand-title">
+                        <img src="{{data.imageURL}}" alt="">
                     </span>
                 </a>
             </div>
@@ -269,7 +274,7 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="/productcategory/">Categories</a></li>
-                            <li><a href="#">Products</a></li>
+                            <li><a href="/productlist/">Products</a></li>
                         </ul>
                     </li>
                     <li class="mega-menu mega-menu-sm">
@@ -277,10 +282,21 @@
                             <i class="icon-credit-card menu-icon"></i><span class="nav-text">Orders</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="#">Pending Orders</a></li>
-                            <li><a href="#">Orders In Delivery</a></li>
-                            <li><a href="#">Delivered Orders</a></li>
-                            <li><a href="#">Cancelled Orders</a></li>
+                            <li><a href="/pendingorders/">Pending Orders</a></li>
+                            <li><a href="/ordersindelivery/">Orders In Delivery</a></li>
+                            <li><a href="/deliveredorders/">Delivered Orders</a></li>
+                            <li><a href="/cancelledorders/">Cancelled Orders</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-user menu-icon"></i><span class="nav-text">Settings</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="/banners">Banners</a></li>
+                            <li><a href="#">Offers</a></li>
+                            <li><a href="/companydetails">Company Details</a></li>
+                            <!-- <li><a href="./index-2.html">Home 2</a></li> -->
                         </ul>
                     </li>
                     <!-- <li class="nav-label">Apps</li>
@@ -457,6 +473,10 @@
 
 
     <script src="{% static 'dashboard/js/dashboard/dashboard-1.js' %}"></script>
+
+    <script src="{% static 'dashboard/plugins/tables/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'dashboard/plugins/tables/js/datatable/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'dashboard/plugins/tables/js/datatable-init/datatable-basic.min.js' %}"></script>
     {% block script %}
 
     {% endblock %}

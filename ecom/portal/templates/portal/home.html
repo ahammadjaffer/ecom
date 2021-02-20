@@ -41,9 +41,15 @@
     <div class="row">
       <div class="col-md-12">
         <div id="main-slider" class="owl-carousel owl-theme">
-          <div class="item"><img src="{% static 'img/baner/Watch-SE_web.webp' %}" alt="" class="img-fluid"></div>
+          {% for banners in details.banners %}
+          {% if banners.bannertag == 't1' or banners.bannertag == 't2' or banners.bannertag == 't3' %}
+          <div class="item"><img src="{{banners.imageURL}}" alt="" class="img-fluid"></div>
+          {% endif %}
+          {% endfor %}
+          <!-- <div class="item"><img src="{% static 'img/baner/Watch-SE_web.webp' %}" alt="" class="img-fluid"></div>
           <div class="item"><img src="{% static 'img/baner/OnePlus_Banners_web.webp' %}" alt="" class="img-fluid"></div>
-          <div class="item"><img src="{% static 'img/baner/Mi_laptop.webp' %}" alt="" class="img-fluid"></div>
+          <div class="item"><img src="{% static 'img/baner/Mi_laptop.webp' %}" alt="" class="img-fluid"></div> -->
+          
           <!-- <div class="item"><img src="{% static 'img/main-slider1.jpg' %}" alt="" class="img-fluid"></div> -->
           <!-- <div class="item"><img src="{% static 'img/main-slider2.jpg' %}" alt="" class="img-fluid"></div>
           <div class="item"><img src="{% static 'img/main-slider3.jpg' %}" alt="" class="img-fluid"></div>
@@ -98,7 +104,7 @@
       <!-- <div class="col-md-12"> -->
         <!-- <h3 class="">Products by category</h3> -->
       <a href="/viewallproducts/">
-        <img class="lazyOwl abt-yp-lazy-loaded" src="{% static 'img/baner/Slices_Banners_Smartphone.jpg' %}" data-src="/images/companies/1/Banners/Slices_Banners_Smartphone.jpg?1604906574112" alt="mobiles 10000 to 20000" width="100%" style="opacity: 1;">
+        <img class="lazyOwl abt-yp-lazy-loaded" src="{% static 'img/baner/smartphone_baner.jpg' %}" data-src="/images/companies/1/Banners/Slices_Banners_Smartphone.jpg?1604906574112" alt="mobiles 10000 to 20000" width="100%" style="opacity: 1;">
       </a>
         <!-- </div> -->
     </div>
@@ -384,7 +390,7 @@
   </div> -->
   <div class="text-center  mb-3">
     <div class="container">
-        <img class="lazyOwl abt-yp-lazy-loaded" src="{% static 'img/baner/Slices_Banners_Smartphone.jpg' %}" data-src="/images/companies/1/Banners/Slices_Banners_Smartphone.jpg?1604906574112" alt="mobiles 10000 to 20000" width="100%" style="opacity: 1;">
+        <img class="lazyOwl abt-yp-lazy-loaded" src="{% static 'img/baner/laptops_baner.jpg' %}" data-src="/images/companies/1/Banners/Slices_Banners_Smartphone.jpg?1604906574112" alt="mobiles 10000 to 20000" width="100%" style="opacity: 1;">
     </div>
   </div>
 
@@ -522,6 +528,149 @@
               </div>
           </div>
       </div>
+  </div>
+</div>
+
+<div class="text-center  mb-3">
+  <div class="container">
+      <img class="lazyOwl abt-yp-lazy-loaded" src="{% static 'img/baner/accessories_baner.jpg' %}" data-src="/images/companies/1/Banners/Slices_Banners_Smartphone.jpg?1604906574112" alt="mobiles 10000 to 20000" width="100%" style="opacity: 1;">
+  </div>
+</div>
+
+<div class="ml-5 mr-5 mb-3">
+  <div class="row">
+    <div class="col-md-2 col-sm-6">
+        <div class="product-grid7 card">
+            <div class="product-image7">
+                <a href="#">
+                    <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/Apple_iPhone_12_Progold-1.webp' %}">
+                    <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/Apple_iPhone_12_Progold-1.webp' %}">
+                </a>
+                <ul class="social">
+                    <li><a href="" class="fa fa-search"></a></li>
+                    <li><a href="" class="fa fa-shopping-bag"></a></li>
+                    <li><a href="" class="fa fa-shopping-cart"></a></li>
+                </ul>
+                <span class="product-new-label">New</span>
+            </div>
+            <div class="product-content">
+                <h3 class="title"><a href="#">Apple iPhone 12 Pro | 256 GB | Gold</a></h3>
+                <div class="price">₹ 129,900.00
+                    <span>₹ 130,000.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-6">
+      <div class="product-grid7 card">
+          <div class="product-image7">
+              <a href="#">
+                  <!-- <img class="pic-1" src="http://bestjquery.com/tutorial/product-grid/demo8/images/img-1.jpg"> -->
+                  <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/iphone-11-128-black1.webp' %}">
+                  <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/iphone-11-128-black1.webp' %}">
+              </a>
+              <ul class="social">
+                  <li><a href="" class="fa fa-search"></a></li>
+                  <li><a href="" class="fa fa-shopping-bag"></a></li>
+                  <li><a href="" class="fa fa-shopping-cart"></a></li>
+              </ul>
+              <span class="product-new-label">New</span>
+          </div>
+          <div class="product-content">
+              <h3 class="title"><a href="#">Apple iPhone 11 | Black | 128 GB</a></h3>
+              <div class="price">₹ 59,900.00
+                  <span>₹ 73,600.00</span>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-sm-6">
+      <div class="product-grid7 card">
+          <div class="product-image7">
+              <a href="#">
+                  <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/oneplus-8T-Aquamarine-green-1_0hzk-m2.webp' %}">
+                  <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/oneplus-8T-Aquamarine-green-1_0hzk-m2.webp' %}">
+              </a>
+              <ul class="social">
+                  <li><a href="" class="fa fa-search"></a></li>
+                  <li><a href="" class="fa fa-shopping-bag"></a></li>
+                  <li><a href="" class="fa fa-shopping-cart"></a></li>
+              </ul>
+              <span class="product-new-label">New</span>
+          </div>
+          <div class="product-content">
+              <h3 class="title"><a href="#">OnePlus 8T 5G | 8GB RAM/128GB Storage | Aquamarine Green</a></h3>
+              <div class="price">₹ 42,999.00
+                  <span></span>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-sm-6">
+        <div class="product-grid7 card">
+            <div class="product-image7">
+                <a href="#">
+                    <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/Realme-watch1.webp' %}">
+                    <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/Realme-watch1.webp' %}">
+                </a>
+                <ul class="social">
+                    <li><a href="" class="fa fa-search"></a></li>
+                    <li><a href="" class="fa fa-shopping-bag"></a></li>
+                    <li><a href="" class="fa fa-shopping-cart"></a></li>
+                </ul>
+            </div>
+            <div class="product-content">
+                <h3 class="title"><a href="#">Realme Smart Watch | Black Strap</a></h3>
+                <div class="price">₹ 2,299.00
+                <span>₹ 6,999.00</span>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-6">
+        <div class="product-grid7 card">
+            <div class="product-image7">
+                <a href="#">
+                    <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/Samsung_Galaxy_S10_Lite-1.webp' %}">
+                    <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/Samsung_Galaxy_S10_Lite-1.webp' %}">
+                </a>
+                <ul class="social">
+                    <li><a href="" class="fa fa-search"></a></li>
+                    <li><a href="" class="fa fa-shopping-bag"></a></li>
+                    <li><a href="" class="fa fa-shopping-cart"></a></li>
+                </ul>
+                <span class="product-new-label">New</span>
+            </div>
+            <div class="product-content">
+                <h3 class="title"><a href="#">Samsung Galaxy S10 Lite | 128 GB/8 GB RAM | Prism Black</a></h3>
+                <div class="price">₹ 32,999.00
+                    <span>₹ 43,999.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-6">
+        <div class="product-grid7 card">
+            <div class="product-image7">
+                <a href="#">
+                    <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/toshiba-1.webp' %}">
+                    <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/toshiba-1.webp' %}">
+                </a>
+                <ul class="social">
+                    <li><a href="" class="fa fa-search"></a></li>
+                    <li><a href="" class="fa fa-shopping-bag"></a></li>
+                    <li><a href="" class="fa fa-shopping-cart"></a></li>
+                </ul>
+                <span class="product-new-label">New</span>
+            </div>
+            <div class="product-content">
+                <h3 class="title"><a href="#">Toshiba Tecra C50 15.6-inch Laptop | Core i3 8th Gen /4GB/1TB/Intel HD Graphics/Windows 10 | Carbon Black</a></h3>
+                <div class="price">₹ 29,990.00
+                    <span>₹ 70,400.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
 </div>
 
@@ -749,13 +898,18 @@
   -->
   <div class="">
     <div class="col-md-12">
-      <div class="box slideshow headerboxes">
-        <h3>Get Inspired</h3>
+      <div class="box slideshow ">
         <!-- <p class="lead">Get the inspiration from our world class designers</p> -->
         <div id="get-inspired" class="owl-carousel owl-theme">
-          <div class="item"><a href="#"><img src="{% static 'img/baner/iphone12.jpg' %}" alt="Get inspired" class="img-fluid"></a></div>
+          {% for banner in details.banners %}
+          {% if banner.bannertag == 'b1' or banner.bannertag == 'b2' or banner.bannertag == 'b3' %}
+          <div class="item"><a href="#"><img src="{{banner.imageURL}}" alt="Get inspired" class="img-fluid"></a></div>
+          {% endif %}
+          {% endfor %}
+          <!-- <div class="item"><a href="#"><img src="{% static 'img/baner/iphone12.jpg' %}" alt="Get inspired" class="img-fluid"></a></div>
           <div class="item"><a href="#"><img src="{% static 'img/baner/radio.jpg' %}" alt="Get inspired" class="img-fluid"></a></div>
-          <div class="item"><a href="#"><img src="{% static 'img/baner/Samsungs21.jpg' %}" alt="Get inspired" class="img-fluid"></a></div>
+          <div class="item"><a href="#"><img src="{% static 'img/baner/Samsungs21.jpg' %}" alt="Get inspired" class="img-fluid"></a></div> -->
+          
           <!-- <div class="item"><a href="#"><img src="{% static 'img/getinspired1.jpg' %}" alt="Get inspired" class="img-fluid"></a></div>
           <div class="item"><a href="#"><img src="{% static 'img/getinspired2.jpg' %}" alt="Get inspired" class="img-fluid"></a></div>
           <div class="item"><a href="#"><img src="{% static 'img/getinspired3.jpg' %}" alt="Get inspired" class="img-fluid"></a></div> -->
@@ -768,14 +922,14 @@
   *** BLOG HOMEPAGE ***
   _________________________________________________________
   -->
-  <div class="box text-center headerboxes">
+  <!-- <div class="box text-center headerboxes">
     <div class="container">
       <div class="col-md-12">
         <h3 class="text-uppercase">From our blog</h3>
-        <!-- <p class="lead mb-0">What's new in the world of fashion? <a href="blog.html">Check our blog!</a></p> -->
+        <p class="lead mb-0">What's new in the world of fashion? <a href="blog.html">Check our blog!</a></p>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- <div class="container">
     <div class="col-md-12">
       <div id="blog-homepage" class="row">

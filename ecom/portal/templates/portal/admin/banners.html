@@ -1,0 +1,205 @@
+{% extends 'portal/admin/base.html' %}
+{% load static %}
+{% block css %}
+<style>
+    .bannercard {
+        height: 75vh;
+    }
+@media only screen and (min-width: 576px) {
+    .bannercard {
+        height: 35vh;
+    }
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% for message in messages %}
+                            <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS%}alert-success{% elif message.level == DEFAULT_MESSAGE_WARNING.SUCCESS%}alert-warning{% endif %} alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                                </button>
+                                {{message}}
+                            </div>
+                        {% endfor %}
+                        <h4 class="card-title">Banners</h4>
+                        <!-- Page content start -->
+                        <div class="row mt-5">
+                            <div class="col-12 m-b-30">
+                                <h4 class="d-inline">Top Banner</h4>
+                                <p class="card-text">Below images will appear on shopping page  in respective order</p>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="card">
+                                            <!-- <img class="img-fluid" src="{% static 'dashboard/images/big/img1.jpg' %}" alt=""> -->
+                                            <img class="img-fluid" src="{{bannerdetails.t1}}" alt="">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Banner 1</h5>
+                                                <div class="button-group">
+                                                    <form action="" method="post" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                        <input type="file" id="bannerone" name="bannerone"  class="form-control">
+                                                        <input type="hidden" name="bannertag" value="t1">
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-danger">Delete</button>
+                                                            <button type="submit" class="btn btn-primary">Update</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <!-- <p class="card-text">This is a wider card with supporting text and below as a natural lead-in to the additional content. This content is a little bit longer.</p> -->
+                                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Col -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="card">
+                                            <!-- <img class="img-fluid" src="{% static 'dashboard/images/big/img2.jpg' %}" alt=""> -->
+                                            <img class="img-fluid" src="{{bannerdetails.t2}}" alt="">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Banner 2</h5>
+                                                <div class="button-group">
+                                                    <form action="" method="post" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                        <input type="file" id="bannertwo" name="bannertwo"  class="form-control">
+                                                        <input type="hidden" name="bannertag" value="t2">
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-danger">Delete</button>
+                                                            <button type="submit" class="btn btn-primary">Update</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <!-- <p class="card-text">This is a wider card with supporting text and below as a natural lead-in to the additional content. This content is a little bit longer.</p> -->
+                                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Col -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="card">
+                                            <!-- <img class="img-fluid" src="{% static 'dashboard/images/big/img3.jpg' %}" alt=""> -->
+                                            <img class="img-fluid" src="{{bannerdetails.t3}}" alt="">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Banner 3</h5>
+                                                <div class="button-group">
+                                                    <form action="" method="post" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                        <input type="file" id="bannerthree" name="bannerthree"  class="form-control">
+                                                        <input type="hidden" name="bannertag" value="t3">
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-danger">Delete</button>
+                                                            <button type="submit" class="btn btn-primary">Update</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <!-- <p class="card-text">This is a wider card with supporting text and below as a natural lead-in to the additional content. This content is a little bit longer.</p> -->
+                                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Col -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="col-12 m-b-30">
+                                <h4 class="d-inline">Bottom Banner</h4>
+                                <p class="card-text">Below images will appear on shopping page  in respective order</p>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="card">
+                                            <!-- <img class="img-fluid" src="{% static 'dashboard/images/big/img1.jpg' %}" alt=""> -->
+                                            <img class="img-fluid" src="{{bannerdetails.b1}}" alt="">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Banner 1</h5>
+                                                <div class="button-group">
+                                                    <form action="" method="post" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                        <input type="file" id="bannerone" name="bannerone"  class="form-control">
+                                                        <input type="hidden" name="bannertag" value="b1">
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-danger">Delete</button>
+                                                            <button type="submit" class="btn btn-primary">Update</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <!-- <p class="card-text">This is a wider card with supporting text and below as a natural lead-in to the additional content. This content is a little bit longer.</p> -->
+                                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Col -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="card">
+                                            <!-- <img class="img-fluid" src="{% static 'dashboard/images/big/img2.jpg' %}" alt=""> -->
+                                            <img class="img-fluid" src="{{bannerdetails.b2}}" alt="">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Banner 2</h5>
+                                                <div class="button-group">
+                                                    <form action="" method="post" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                        <input type="file" id="bannertwo" name="bannertwo"  class="form-control">
+                                                        <input type="hidden" name="bannertag" value="b2">
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-danger">Delete</button>
+                                                            <button type="submit" class="btn btn-primary">Update</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <!-- <p class="card-text">This is a wider card with supporting text and below as a natural lead-in to the additional content. This content is a little bit longer.</p> -->
+                                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Col -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="card">
+                                            <!-- <img class="img-fluid" src="{% static 'dashboard/images/big/img3.jpg' %}" alt=""> -->
+                                            <img class="img-fluid" src="{{bannerdetails.b3}}" alt="">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Banner 3</h5>
+                                                <div class="button-group">
+                                                    <form action="" method="post" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                        <input type="file" id="bannerthree" name="bannerthree"  class="form-control">
+                                                        <input type="hidden" name="bannertag" value="b3">
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-danger">Delete</button>
+                                                            <button type="submit" class="btn btn-primary">Update</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <!-- <p class="card-text">This is a wider card with supporting text and below as a natural lead-in to the additional content. This content is a little bit longer.</p> -->
+                                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Col -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page content end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block script %}
+<script type="text/javascript">
+   
+</script>
+{% endblock %}

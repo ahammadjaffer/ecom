@@ -3,12 +3,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .subviews import *
+from .models import *
 
 def home(request):
     context = {}
+    data = {}
     if request.user.is_authenticated:
         if (request.user.is_superuser):
             return redirect('admin_home')
+    data['banners'] = Banners.objects.all()
+    context = {'details':data}
     return render(request, 'portal/home.html', context)
 
 def register(request):
@@ -30,7 +34,6 @@ def user_login(request):
                 else:
                     return redirect('home')
             else:
-                print("Username or Password is incorrect")
                 messages.info(request, 'Username or Password is incorrect')
         context={}
         return render(request, 'portal/register.html', context)

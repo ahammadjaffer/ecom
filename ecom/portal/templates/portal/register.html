@@ -10,29 +10,49 @@
       <div class="container">
         <div class="card">
           <div class="row">
-            <!-- <div class="col-lg-12">
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <li aria-current="page" class="breadcrumb-item active">New account / Sign in</li>
-                </ol>
-              </nav>
-            </div> -->
             <div class="col-lg-12" id="">
             {% for message in messages %}
                 <div class="alert alert-warning" role="alert">
-                    {{message}}
+                  {{message}}
                 </div>
             {% endfor %}
-          </div>
-            <div class="col-lg-6" id="registertab1">
+            </div>
+            <div class="col-lg-6 form-validation" id="registertab1">
+              <form class="form-valid" action="#" method="POST">
+                {% csrf_token %}
               <div class="box">
                 <h1>New account</h1>
                 <p class="lead">Not our registered customer yet?</p>
                 <p>By registering with us fantastic discounts and much more opens to you! The whole process will not take you more than a minute!</p>
-                <!-- <p class="text-muted">If you have any questions, please feel free to <a href="#">contact us</a>, our customer service center is working for you 24/7.</p> -->
                 <hr>
-                <div class="row">
+                <div class="form-group ">
+                  <div class="col-lg-8">
+                    <label for="firstname">First Name</label>
+                    <input id="firstname" name="firstname" type="text" class="form-control">
+                  </div>
+                  <div class="col-lg-8">
+                    <label for="lastname">Last Name</label>
+                    <input id="lastname" name="lastname" type="text" class="form-control">
+                  </div>
+                <!-- </div> -->
+                <div class="col-lg-8">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="text" class="form-control">
+                </div>
+                <div class="col-lg-8">
+                  <label for="phone">Phone</label>
+                  <input id="phone" name="phone" type="text" class="form-control">
+                </div>
+                <div class="col-lg-8">
+                  <label for="password">Password</label>
+                  <input id="password" name="password" type="password" class="form-control">
+                </div>
+                <div class="col-lg-8">
+                  <label for="confirmpassword">Confirm Password</label>
+                  <input id="confirmpassword" name="confirmpassword" type="password" class="form-control">
+                </div>
+                </div>
+                <!-- <div class="row">
                   <div class="form-group col">
                     <label for="firstname">First Name</label>
                     <input id="firstname" name="firstname" type="text" class="form-control">
@@ -57,68 +77,33 @@
                   <div class="form-group">
                     <label for="confirmpassword">Confirm Password</label>
                     <input id="confirmpassword" name="confirmpassword" type="password" class="form-control">
-                  </div>
-                  <div class="">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-user-md"></i> Register</button>
-                    <!-- <button type="button" class="btn btn-primary" id="nextbtn"><i class="fa fa-user-md"></i> Next</button> -->
-                  </div>
-                  <!-- <div class="input-group">
-                    <p class="lead">Already our customer? </p>
-                    <button type="button" class="btn btn-primary" id="loginbtn"><i class="fa fa-user-md"></i> Login</button>
                   </div> -->
-              </div>
-            </div>
-            <div class="col-lg-6" id="registertab2">
-              <div class="box">
-                <h1>Contact Details</h1>
-                
-                  <div class="form-group">
-                    <label for="name">Name</label>
-                    <input id="name" type="text" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" type="text" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <label for="password">Password</label>
-                    <input id="password" type="password" class="form-control">
-                  </div>
-                  <div class="">
-                    <button type="button" class="btn btn-primary" id="backbtn"><i class="fa fa-user-md"></i> Back</button>
+                  <div class="col-lg-6 mt-3">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-user-md"></i> Register</button>
                   </div>
+                  <!-- <div class="">
+                  </div> -->
+                </div>
+              </form>
               </div>
-            </div>
-          </form>
             <div class="col-lg-6" id="logintab">
               <div class="box">
                 <h1>Login</h1>
                 <p class="lead">Already our customer?</p>
-                <!-- <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p> -->
                 <hr>
                 <form action="/login/" method="post">
                   {% csrf_token %}
-                  <!-- {% for message in messages %}
-                      <div class="alert alert-warning" role="alert">
-                          {{message}}
-                      </div>
-                  {% endfor %} -->
-                  <div class="form-group">
+                  <div class="col-lg-8 form-group">
                     <label for="email">Username</label>
                     <input id="username" name="username" type="text" class="form-control">
                   </div>
-                  <div class="form-group">
+                  <div class="col-lg-8 form-group">
                     <label for="password">Password</label>
                     <input id="password" name="password" type="password" class="form-control">
                   </div>
                   <div class="">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
                   </div>
-                  <!-- <div class="input-group">
-                    <p class="lead">Not our registered customer yet?</p>
-                    <button type="button" class="btn btn-primary" id="registerbtn"><i class="fa fa-sign-in"></i> Register</button>
-                  </div> -->
                 </form>
               </div>
             </div>
@@ -130,26 +115,79 @@
 {% endblock%}
 
 {% block script %}
-<script>
-    $('#registertab2').hide();
-    // $('#logintab').hide();
-    // $('#nextbtn').on('click',function(){
-    //     $('#registertab1').hide();
-    //     $('#registertab2').show();
-    // });
-    // $('#backbtn').on('click',function(){
-    //     $('#registertab1').show();
-    //     $('#registertab2').hide();
-    // });
-    // $('#loginbtn').on('click',function(){
-    //     $('#registertab1').hide();
-    //     $('#registertab2').hide();
-    //     $('#logintab').show();
-    // });
-    // $('#registerbtn').on('click',function(){
-    //     $('#registertab1').show();
-    //     $('#registertab2').hide();
-    //     $('#logintab').hide();
-    // });
+<script src="{% static 'dashboard/plugins/validation/jquery.validate.min.js' %}"></script>
+<script src="{% static 'dashboard/plugins/validation/jquery.validate-init.js' %}"></script>
+<script type="text/javascript">
+
+    jQuery(".form-valid").validate({
+        rules: {
+            "firstname": {
+              required: !0,
+              minlength: 1
+            },
+            "lastname": {
+              required: !0,
+              minlength: 1
+            },
+            "email": {
+              required: !0,
+              email: !0
+            },
+            "phone": {
+              required: !0,
+              minlength: 10
+            },
+            "password": {
+              required: !0,
+              minlength: 8
+            },
+            "confirmpassword": {
+              required: !0,
+              minlength: 8,
+              equalTo: "#password"
+            },
+        },
+        messages: {
+            "firstname": {
+                required: "Please enter first name",
+                minlength: "Please enter first name"
+            },
+            "lastname": {
+                required: "Please enter last name",
+                minlength: "Please enter last name"
+            },
+            "email": {
+                required: "Please enter email",
+                minlength: "Please enter email"
+            },
+            "phone": {
+                required: "Please enter phone number",
+                minlength: "Please enter phone number"
+            },
+            "password": {
+                required: "Please enter password",
+                minlength: "Your password must be at least 8 characters long"
+            },
+            "confirmpassword": {
+              required: "Please enter password",
+              minlength: "Your password must be at least 8 characters long",
+              equalTo: "Please enter the same password as above"
+            },
+        },
+
+        ignore: [],
+        errorClass: "invalid-feedback animated fadeInUp",
+        errorElement: "div",
+        errorPlacement: function(e, a) {
+            jQuery(a).parents(".form-group > div").append(e)
+        },
+        highlight: function(e) {
+            jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+        },
+        success: function(e) {
+            jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+        },
+    });
+
 </script>
 {% endblock %}

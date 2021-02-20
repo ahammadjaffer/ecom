@@ -55,7 +55,8 @@ def productlist(request):
         if validateproduct(request):
             product = Products.objects.create(name=request.POST['name'], 
             description=request.POST['description'], 
-            categoryid=request.POST['category'], 
+            categoryid=request.POST['productaddcategory'], 
+            subcategoryid=request.POST['productaddsubcategory'], 
             count=request.POST['count'], 
             price=request.POST['price'], 
             sellerid=request.user.id, 
@@ -127,6 +128,7 @@ def loadproductmodal(request):
             producttemp['count'] = detail.count
             producttemp['price'] = detail.price
             producttemp['categoryid'] = detail.categoryid
+            producttemp['subcategoryid'] = detail.subcategoryid
         data.append(producttemp)
         return JsonResponse({"instance": data}, status=200)
 

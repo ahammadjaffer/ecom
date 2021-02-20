@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- <title>{% block title %}{% endblock %}</title> -->
-    <title>Ecom</title>
+    <title>{{companydetails.companydetails.name}}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -82,6 +82,11 @@
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
           }
+
+          #footer a{
+            color: #fffaf0;
+          }
+
           @media (min-width: 1200px) {
   .container {
     max-width: 1500px;
@@ -156,7 +161,8 @@
         
       </div>
       <nav class="navbar navbar-expand-lg">
-        <div class="container"><a href="{% url 'home' %}" class="navbar-brand home"><img src="{% static 'img/logo.png' %}" alt="Obaju logo" class="d-none d-md-inline-block"><img src="img/logo-small.png" alt="Obaju logo" class="d-inline-block d-md-none"><span class="sr-only">Obaju - go to homepage</span></a>
+        <!-- <div class="container"><a href="{% url 'home' %}" class="navbar-brand home"><img src="{% static 'img/logo.png' %}" alt="Obaju logo" class="d-none d-md-inline-block"><img src="img/logo-small.png" alt="Obaju logo" class="d-inline-block d-md-none"><span class="sr-only">Obaju - go to homepage</span></a> -->
+          <div class="container"><a href="{% url 'home' %}" class="navbar-brand home"><img src="{{companydetails.companydetails.imageURL}}" alt="Obaju logo" class="d-none d-md-inline-block"><img src="{{companydetails.companydetails.imageURL}}" alt="Obaju logo" class="d-inline-block d-md-none"><span class="sr-only">Obaju - go to homepage</span></a>
           <div class="navbar-buttons">
             <button type="button" data-toggle="collapse" data-target="#navigation" class="btn btn-outline-secondary navbar-toggler"><span class="sr-only">Toggle navigation</span><i class="fa fa-align-justify"></i></button>
             <button type="button" data-toggle="collapse" data-target="#search" class="btn btn-outline-secondary navbar-toggler"><span class="sr-only">Toggle search</span><i class="fa fa-search"></i></button><a href="basket.html" class="btn btn-outline-secondary navbar-toggler"><i class="fa fa-shopping-cart"></i></a>
@@ -164,8 +170,27 @@
           <div id="navigation" class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
               {% if not user.is_authenticated or user.is_authenticated and not user.is_superuser %}
-              <li class="nav-item"><a href="#" class="nav-link">Home</a></li><!-- active -->
-              <li class="nav-item dropdown menu-large"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="dropdown-toggle nav-link">Mobile Phones<b class="caret"></b></a>
+              <!-- class active -->
+              <!-- <li class="nav-item"><a href="#" class="nav-link">Home</a></li> -->
+              {% for cat in companydetails.categories %}
+              <li class="nav-item dropdown menu-medium"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="dropdown-toggle nav-link">{{cat.name}}<b class="caret"></b></a>
+                <ul class="dropdown-menu megamenu">
+                  <li>
+                    <div class="row">
+                      <div class="col-md-6 col-lg-3">
+                        <ul class="list-unstyled mb-3">
+                          {% for subcat in companydetails.subcategories %}
+                            {% if cat.id == subcat.parentcategory_id %}
+                            <li class="nav-item" value="{{subcat.id}}"><a href="category.html" class="nav-link">{{subcat.name}}</a></li>
+                            {% endif %}
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              {% endfor %}
+              <!-- <li class="nav-item dropdown menu-large"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="dropdown-toggle nav-link">Mobile Phones<b class="caret"></b></a>
                 <ul class="dropdown-menu megamenu">
                   <li>
                     <div class="row">
@@ -314,7 +339,7 @@
                     </div>
                   </li>
                 </ul>
-              </li>
+              </li> -->
               {% else %}
               <!-- profiles -->
               <li class="nav-item dropdown menu-md"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="dropdown-toggle nav-link">Profiles<b class="caret"></b></a>
@@ -426,7 +451,19 @@
             </ul>
           </div>
           <!-- /.col-lg-3-->
+          {% for cat in companydetails.categories %}
           <div class="col-lg-3 col-md-6">
+            <h5>{{cat.name}}</h5>
+            <ul class="list-unstyled"></ul>
+            {% for subcat in companydetails.subcategories %}
+              {% if cat.id == subcat.parentcategory_id %}
+              <li value="{{subcat.id}}"><a href="#">{{subcat.name}}</a></li>
+              {% endif %}
+            {% endfor %}
+            </ul>
+          </div>
+          {% endfor %}
+          <!-- <div class="col-lg-3 col-md-6">
             <h4 class="mb-3">Top categories</h4>
             <h5>Men</h5>
             <ul class="list-unstyled">
@@ -441,28 +478,14 @@
               <li><a href="category.html">Pants</a></li>
               <li><a href="category.html">Accessories</a></li>
             </ul>
-          </div>
+          </div> -->
           <!-- /.col-lg-3-->
           <div class="col-lg-3 col-md-6">
             <h4 class="mb-3">Where to find us</h4>
-            <p><strong>Obaju Ltd.</strong><br>13/25 New Avenue<br>New Heaven<br>45Y 73J<br>England<br><strong>Great Britain</strong></p><a href="contact.html">Go to contact page</a>
+            <p><strong>{{companydetails.companydetails.name}}</strong><br>{{companydetails.companydetails.address}}<br><strong>India</strong></p><a href="contact.html">Go to contact page</a>
             <hr class="d-block d-md-none">
           </div>
           <!-- /.col-lg-3-->
-          <div class="col-lg-3 col-md-6">
-            <h4 class="mb-3">Get the news</h4>
-            <p class="footerButton">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-            <form>
-              <div class="input-group">
-                <input type="text" class="form-control"><span class="input-group-append">
-                  <button type="button" class="btn btn-outline-secondary">Subscribe!</button></span>
-              </div>
-              <!-- /input-group-->
-            </form>
-            <hr>
-            <h4 class="mb-3">Stay in touch</h4>
-            <p class="social"><a href="#" class="facebook external"><i class="fa fa-facebook"></i></a><a href="#" class="twitter external"><i class="fa fa-twitter"></i></a><a href="#" class="instagram external"><i class="fa fa-instagram"></i></a><a href="#" class="gplus external"><i class="fa fa-google-plus"></i></a><a href="#" class="email external"><i class="fa fa-envelope"></i></a></p>
-          </div>
           {% else %}
           <div class="col-lg-3 col-md-6">
             <h4 class="mb-3">Profiles</h4>

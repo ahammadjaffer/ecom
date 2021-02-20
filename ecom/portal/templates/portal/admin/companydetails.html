@@ -1,0 +1,160 @@
+{% extends 'portal/admin/base.html' %}
+{% load static %}
+{% block css %}
+{% endblock %}
+{% block content %}
+<div class="content-body">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% for message in messages %}
+                            <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS%}alert-success{% elif message.level == DEFAULT_MESSAGE_WARNING.SUCCESS%}alert-warning{% endif %} alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                                </button>
+                                {{message}}
+                            </div>
+                        {% endfor %}
+                        <h4 class="card-title">Company Details</h4>
+
+                        <!-- Page content start -->
+                        <div class="form-validation">
+                            <form class="form-valid" action="#" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="companytag" value="c1">
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label" for="companyname">Company Name <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control" id="companyname" name="companyname" placeholder="Enter company name" value="{{data.name}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label" for="address">Address <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-lg-6">
+                                        <textarea class="form-control" id="address" name="address" rows="5" placeholder="Enter company address">{{data.address}}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label" for="email">Email <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter company email" value="{{data.email}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label" for="phonenumber">Phone Number <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="212-999-0000" value="{{data.phonenumber}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label" for="companylogo">Company Logo
+                                    </label>
+                                    <div class="col-lg-6">
+                                        <input type="file" id="companylogo" name="companylogo"  class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label" for="termsandconditions">Terms &amp; Conditions <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-lg-6">
+                                        <textarea class="form-control" id="termsandconditions" name="termsandconditions" rows="5" placeholder="Enter company terms & conditions">{{data.termsandconditions}}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label" for="facebook">Facebook
+                                    </label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control" id="facebook" name="facebook" placeholder="Provide link" value="{{data.facebook}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label" for="instagram">Instagram
+                                    </label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control" id="instagram" name="instagram" placeholder="Provide link" value="{{data.instagram}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label" for="youtube">Youtube
+                                    </label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control" id="youtube" name="youtube" placeholder="Provide link" value="{{data.youtube}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-10">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Page content end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+{% endblock%}
+
+{% block script %}
+<script src="{% static 'dashboard/plugins/validation/jquery.validate.min.js' %}"></script>
+<script src="{% static 'dashboard/plugins/validation/jquery.validate-init.js' %}"></script>
+<script type="text/javascript">
+
+    jQuery(".form-valid").validate({
+        rules: {
+            "companyname": {
+                required: !0,
+                minlength: 1
+            },
+            "address": {
+                required: !0,
+            },
+            "email": {
+                required: !0,
+                email: !0
+            },
+            "phonenumber": {
+                required: !0,
+            },
+            "termsandconditions": {
+                required: !0,
+            },
+        },
+        messages: {
+            "companyname": {
+                required: "Please enter company name",
+                minlength: "Your comapny name must consist of at least 1 characters"
+            },
+            "address": {
+                required: "Please enter company address",
+            },
+            "email": "Please enter a valid email address",
+            "phonenumber": "Please enter a valid phone number",
+            "termsandconditions": "Please enter company terms & conditions",
+        },
+
+        ignore: [],
+        errorClass: "invalid-feedback animated fadeInUp",
+        errorElement: "div",
+        errorPlacement: function(e, a) {
+            jQuery(a).parents(".form-group > div").append(e)
+        },
+        highlight: function(e) {
+            jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+        },
+        success: function(e) {
+            jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+        },
+    });
+
+</script>
+{% endblock %}

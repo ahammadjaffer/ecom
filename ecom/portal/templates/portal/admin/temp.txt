@@ -3,7 +3,32 @@
 {% block css %}
 {% endblock %}
 {% block content %}
+<div class="content-body">
 
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% for message in messages %}
+                            <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS%}alert-success{% elif message.level == DEFAULT_MESSAGE_WARNING.SUCCESS%}alert-warning{% endif %} alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                                </button>
+                                {{message}}
+                            </div>
+                        {% endfor %}
+                        <h4 class="card-title">Product Category</h4>
+
+                        <!-- Page content start -->
+
+                        <!-- Page content end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
 {% endblock%}
 
 {% block script %}
