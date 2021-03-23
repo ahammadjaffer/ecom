@@ -32,6 +32,8 @@ urlpatterns = [
     # path('deliveredorderdetails/', adminview.deliveredorderdetails, name='deliveredorderdetails'),
     # path('cancelledorderdetails/', adminview.cancelledorderdetails, name='cancelledorderdetails'),
     path('viewallproducts/', portalview.viewallproducts, name='viewallproducts'),
+    path('viewproductdetail/<int:productid>/', portalview.viewproductdetail, name='viewproductdetail'),
+    path('basket/', portalview.basket, name='basket'),
 
     # new admin pages
     path('dashboard/', adminpanelview.dashboard, name='dashboard'),

@@ -108,17 +108,17 @@
       <div id="top">
         <div class="container">
           <div class="row">
-            <div class="col-lg-6 offer mb-3 mb-lg-0">{% if not user.is_authenticated %}<a href="#" class="btn btn-success btn-sm">Offer of the day</a><a href="#" class="ml-1">Get flat 35% off on orders over $50!</a>{% endif %}</div>
-            <div class="col-lg-6 text-center text-lg-right">
+            <!-- <div class="col-lg-6 offer mb-3 mb-lg-0">{% if not user.is_authenticated %}<a href="#" class="btn btn-success btn-sm">Offer of the day</a><a href="#" class="ml-1">Get flat 35% off on orders over $50!</a>{% endif %}</div> -->
+            <div class="col-lg-12 text-center text-lg-right">
               <ul class="menu list-inline mb-0">
                 {% if not user.is_authenticated %}
                 <li class="list-inline-item"><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
                 <li class="list-inline-item"><a href="/register/">Register</a></li>
-                <li class="list-inline-item"><a href="contact.html">Contact</a></li>
+                <li class="list-inline-item"><a href="#">Contact</a></li>
                 <li class="list-inline-item"><a href="#">Recently viewed</a></li>
                 {% endif %}
                 {% if user.is_authenticated %}
-                <li class="list-inline-item"><a href="/adminprofile/">Hi, {{request.user}}</a></li>
+                <li class="list-inline-item"><a href="#">Hi, {{request.user.first_name}}  {{request.user.last_name}}</a></li>
                 <li class="list-inline-item"><a href="{% url 'user_logout' %}">Logout</a></li>
                 {% endif %}
               </ul>
@@ -393,7 +393,6 @@
               </li>
               {% endif %}
             </ul>
-            {% if not user.is_authenticated %}
             <div class="navbar-buttons d-flex justify-content-end">
               <!-- /.nav-collapse-->
               <!-- <div id="search-not-mobile" class="navbar-collapse collapse"></div><a data-toggle="collapse" href="#search" class="btn navbar-btn btn-primary d-none d-lg-inline-block"><span class="sr-only">Toggle search</span><i class="fa fa-search"></i></a> -->
@@ -405,9 +404,8 @@
                     </div>
                   </div>
                 </form>
-              <div id="basket-overview" class="navbar-collapse collapse d-none d-lg-block"><a href="basket.html" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span>3 items in cart</span></a></div>
+              <div id="basket-overview" class="navbar-collapse collapse d-none d-lg-block"><a href="#" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span>{{companydetails.cartcount}} items in cart</span></a></div>
             </div>
-            {% endif %}
           </div>
         </div>
       </nav>
@@ -434,6 +432,65 @@
     <div id="footer" class="mt-5">
       <div class="container">
         <div class="row">
+          
+            {% if not user.is_authenticated or user.is_authenticated and not user.is_superuser %}
+              <div class="col-lg-10 col-md-10">
+                <h4 class="mb-3">Pages</h4>
+                <a href="text.html">About us</a> | 
+                <a href="text.html">Terms and conditions</a> | 
+                <a href="faq.html">FAQ</a> | 
+                <a href="contact.html">Contact us</a>
+                <hr>
+                <h4 class="mb-3">User section</h4>
+                <a href="#" data-toggle="modal" data-target="#login-modal">Login</a> | 
+                <a href="register.html">Register</a>
+                <br><br>
+              </div>
+              {% for cat in companydetails.categories %}
+              <div class="col-lg-10 col-md-10">
+                <h5>{{cat.name}}</h5>
+                {% for subcat in companydetails.subcategories %}
+                  {% if cat.id == subcat.parentcategory_id %}
+                  <a href="#">{{subcat.name}}</a> | 
+                  {% endif %}
+                {% endfor %}
+                <br><br>
+              </div>
+              {% endfor %}
+              <div class="col-lg-10 col-md-10">
+                <h4 class="mb-3">Where to find us</h4>
+                <p><strong>{{companydetails.companydetails.name}}</strong><br>{{companydetails.companydetails.address}}<br><strong>India</strong></p><a href="contact.html">Go to contact page</a>
+                <hr class="d-block d-md-none">
+              </div>
+              {% else %}
+              <div class="col-lg-3 col-md-6">
+                <h4 class="mb-3">Profiles</h4>
+                <ul class="list-unstyled">
+                  <li><a href="/adminprofile/">My Profile</a></li>
+                  <li><a href="/adminlist/">Admin Users</a></li>
+                </ul>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <h4 class="mb-3">Products</h4>
+                <ul class="list-unstyled">
+                  <li><a href="/productcategory/" data-toggle="modal" data-target="#login-modal">Categories</a></li>
+                  <li><a href="/productlist/">Products</a></li>
+                </ul>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <h4 class="mb-3">Orders</h4>
+                <h5><a href="/manageorders/" class="">Manage Orders</a></h5>
+                <ul class="list-unstyled">
+                  <li><a href="/pendingorders/">Pending Orders</a></li>
+                  <li><a href="/ordersindelivery/">Orders In Delivery</a></li>
+                  <li><a href="/deliveredorders/">Delivered Orders</a></li>
+                  <li><a href="/cancelledorders/">Cancelled Orders</a></li>
+                </ul>  
+              </div>
+              {% endif %}
+          
+        </div>
+        <!-- <div class="row">
           {% if not user.is_authenticated %}
           <div class="col-lg-3 col-md-6">
             <h4 class="mb-3">Pages</h4>
@@ -450,7 +507,6 @@
               <li><a href="register.html">Regiter</a></li>
             </ul>
           </div>
-          <!-- /.col-lg-3-->
           {% for cat in companydetails.categories %}
           <div class="col-lg-3 col-md-6">
             <h5>{{cat.name}}</h5>
@@ -463,29 +519,11 @@
             </ul>
           </div>
           {% endfor %}
-          <!-- <div class="col-lg-3 col-md-6">
-            <h4 class="mb-3">Top categories</h4>
-            <h5>Men</h5>
-            <ul class="list-unstyled">
-              <li><a href="category.html">T-shirts</a></li>
-              <li><a href="category.html">Shirts</a></li>
-              <li><a href="category.html">Accessories</a></li>
-            </ul>
-            <h5>Ladies</h5>
-            <ul class="list-unstyled">
-              <li><a href="category.html">T-shirts</a></li>
-              <li><a href="category.html">Skirts</a></li>
-              <li><a href="category.html">Pants</a></li>
-              <li><a href="category.html">Accessories</a></li>
-            </ul>
-          </div> -->
-          <!-- /.col-lg-3-->
           <div class="col-lg-3 col-md-6">
             <h4 class="mb-3">Where to find us</h4>
             <p><strong>{{companydetails.companydetails.name}}</strong><br>{{companydetails.companydetails.address}}<br><strong>India</strong></p><a href="contact.html">Go to contact page</a>
             <hr class="d-block d-md-none">
           </div>
-          <!-- /.col-lg-3-->
           {% else %}
           <div class="col-lg-3 col-md-6">
             <h4 class="mb-3">Profiles</h4>
@@ -501,7 +539,6 @@
               <li><a href="/productlist/">Products</a></li>
             </ul>
           </div>
-          <!-- /.col-lg-3-->
           <div class="col-lg-3 col-md-6">
             <h4 class="mb-3">Orders</h4>
             <h5><a href="/manageorders/" class="">Manage Orders</a></h5>
@@ -513,8 +550,7 @@
             </ul>  
           </div>
           {% endif %}
-          <!-- /.col-lg-3-->
-        </div>
+        </div> -->
         <!-- /.row-->
       </div>
       <!-- /.container-->

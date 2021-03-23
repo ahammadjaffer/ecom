@@ -871,7 +871,7 @@ h1 {
 #content #productMain .goToDescription {
   margin-top: 20px;
   font-size: 0.738rem;
-  text-align: center;
+  /* text-align: center; */
 }
 
 #content #productMain .goToDescription a {
@@ -882,13 +882,13 @@ h1 {
 #content #productMain .price {
   font-size: 1.8rem;
   font-weight: 300;
-  text-align: center;
+  /* text-align: center; */
   margin-top: 40px;
 }
 
 #content #productMain .buttons {
   margin-bottom: 0;
-  text-align: center;
+  /* text-align: center; */
 }
 
 #content #productMain .buttons .btn {

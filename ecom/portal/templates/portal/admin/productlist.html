@@ -130,6 +130,20 @@
                                             <label for="description" class="col-form-label">Description</label><span class="text-danger">*</span>
                                             <textarea id="description" name="description" class="form-control" ></textarea>
                                         </div>
+                                        <div class="form-group">
+                                            <div class="todo-list">
+                                                <div class="">
+                                                    <div class="feature-content">
+                                                        <ul id="todo_list">
+                                                            <!-- <li><label>Get up<a href='#' class="ti-trash"></a></label></li> -->
+                                                        </ul>
+                                                    </div>
+                                                    <div class="">
+                                                        <input type="text" class="featuretext form-control" placeholder="Hit enter to add more features">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col">
                                                 <div class="form-group">
@@ -208,6 +222,20 @@
                                             <label for="editdescription" class="col-form-label">Description</label>
                                             <textarea id="editdescription" name="editdescription" class="form-control" ></textarea>
                                         </div>
+                                        <div class="form-group">
+                                            <div class="todo-list">
+                                                <div class="">
+                                                    <div class="feature-content">
+                                                        <ul id="todo_list">
+                                                            <!-- <li><label>Get up<a href='#' class="ti-trash"></a></label></li> -->
+                                                        </ul>
+                                                    </div>
+                                                    <div class="">
+                                                        <input type="text" class="featuretext form-control" placeholder="Hit enter to add more features">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col">
                                                 <div class="form-group">
@@ -248,12 +276,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-danger" id="delete">Delete</button>
-                                            <button type="submit" class="btn btn-primary" >Update</button>
-                                        </div>
                                     </form>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger" id="delete">Delete</button>
+                                        <button type="button" class="btn btn-primary" id="update" >Update</button>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -278,6 +306,12 @@
         let no = $(this).data('no');
         $(".preview-image.preview-show-"+no).remove();
     });
+
+    // product update
+    $('#update').click(function(){
+        document.getElementById("updateproduct").submit();
+    });
+
 } );
 $('#myModal').on('shown.bs.modal', function () {
   $('#myInput').trigger('focus')
@@ -345,7 +379,7 @@ function loadupdatemodal(productid){
         success: function( data )
         {
             var fields = data["instance"];
-            $.each(fields, function(key,value) { 
+            $.each(fields, function(key,value) {
                 let categoryid = value['categoryid'];
                 let subcategoryid = value['subcategoryid'];
                 loadproducteditmodal(categoryid)
@@ -358,6 +392,14 @@ function loadupdatemodal(productid){
                 $('#editcount').val(value['count'])
                 $('#editprice').val(value['price'])
                 $('#editshippingcharge').val(value['shippingcharge'])
+                if (value['featurelist']!=''){
+                    $.each(value['featurelist'], function(key,value) {
+                        var hiddenfield = '';
+                        hiddenfield=hiddenfield+'<input type="hidden" name="feature" id="feature['+key+']" value="'+value+'">';
+                        $(".feature-content ul").append("<li><label>" + value + "<a href='#' class='ti-trash'></a>"+hiddenfield+"</label></li>");
+                        $(this).val("");
+                    })
+                }
             });
         }
     })
@@ -375,11 +417,13 @@ function loadproductaddmodal() {
             $('#productaddcategory').empty();
             $('#productaddcategory').append("<option value=0>Select</option>");
             var fields = data["instance"];
+            console.log(fields);
             $.each(fields, function(key,value) {
                 $('#productaddcategory').append("<option value="+value['id']+">"+value['name']+"</option>");
             });
         }
     })
+    featureadd()
 }
 
 function loadproducteditmodal(categoryid) {
@@ -459,6 +503,75 @@ function loadeditmodalsubcategory(categoryid, subcategoryid) {
         }
     })
 }
+
+function featureadd() {
+    $(".feature-content ul").empty();
+}
+
+//todo list
+$(".featuretext").on('keypress', function(e) {
+
+var code = (e.keyCode ? e.keyCode : e.which);
+
+if (code == 13) {
+
+    var v = $(this).val();
+
+    var s = v.replace(/ +?/g, '');
+
+    if (s == "") {
+
+        return false;
+
+    } else {
+        var i = $('#todo_list li').length + 1;
+        var hiddenfield = '';
+        hiddenfield=hiddenfield+'<input type="hidden" name="feature" id="feature['+i+']" value="'+v+'">';
+        $(".feature-content ul").append("<li><label>" + v + "<a href='#' class='ti-trash'></a>"+hiddenfield+"</label></li>");
+
+        $(this).val("");
+
+    }
+
+}
+
+});
+
+
+
+
+
+$(".feature-content a").on("click", function() {
+
+var _li = $(this).parent().parent("li");
+
+_li.addClass("remove").stop().delay(100).slideUp("fast", function() {
+
+    _li.remove();
+
+});
+
+return false;
+
+});
+
+
+
+// for dynamically created a tags
+
+$(".feature-content").on('click', "a", function() {
+
+var _li = $(this).parent().parent("li");
+
+_li.addClass("remove").stop().delay(100).slideUp("fast", function() {
+
+    _li.remove();
+
+});
+
+return false;
+
+});
 
 </script>
 {% endblock %}

@@ -44,8 +44,8 @@
                   <input id="phone" name="phone" type="text" class="form-control">
                 </div>
                 <div class="col-lg-8">
-                  <label for="password">Password</label>
-                  <input id="password" name="password" type="password" class="form-control">
+                  <label for="newpassword">Password</label>
+                  <input id="newpassword" name="newpassword" type="password" class="form-control">
                 </div>
                 <div class="col-lg-8">
                   <label for="confirmpassword">Confirm Password</label>
@@ -137,14 +137,14 @@
               required: !0,
               minlength: 10
             },
-            "password": {
+            "newpassword": {
               required: !0,
               minlength: 8
             },
             "confirmpassword": {
               required: !0,
               minlength: 8,
-              equalTo: "#password"
+              equalTo: "#newpassword"
             },
         },
         messages: {
@@ -164,7 +164,7 @@
                 required: "Please enter phone number",
                 minlength: "Please enter phone number"
             },
-            "password": {
+            "newpassword": {
                 required: "Please enter password",
                 minlength: "Your password must be at least 8 characters long"
             },

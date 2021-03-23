@@ -25,6 +25,8 @@ def save_user_profile(sender, instance, **kwargs):
 class Products(models.Model):
     name = models.CharField(max_length=200, null=False)
     description = models.CharField(max_length=1000, null=False)
+    features = models.TextField(max_length=max, blank=True)
+    deliverydetails = models.TextField(max_length=max, blank=True)
     categoryid = models.IntegerField(blank=False, null=False)
     subcategoryid = models.IntegerField(blank=False, null=False)
     count = models.IntegerField(blank=False, null=False)

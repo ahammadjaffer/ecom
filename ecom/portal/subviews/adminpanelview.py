@@ -17,9 +17,6 @@ from django.db import DatabaseError, transaction
 def dashboard(request):
     context = {}
     companydetails = Companydetails.objects.all()
-    # for row in companydetails:
-    #     data = row
-    # context = {'data':data}
     return render(request, 'portal/admin/dashboard.html', context)
 
 @login_required(login_url='user_login')
@@ -149,9 +146,14 @@ def deletesubcategory(request):
 @login_required(login_url='user_login')
 def productlist(request):
     if request.method == 'POST':
+        seperator = '$$'
+        feature = ''
         if validateproduct(request):
+            if "feature" in request.POST:
+                feature = seperator.join(request.POST.getlist('feature'))
             product = Products.objects.create(name=request.POST['name'], 
             description=request.POST['description'], 
+            features=feature, 
             categoryid=request.POST['productaddcategory'], 
             subcategoryid=request.POST['productaddsubcategory'], 
             count=request.POST['count'], 
@@ -161,7 +163,7 @@ def productlist(request):
             shipmentcharge=request.POST['shippingcharge'])
             for f in request.FILES.getlist('pro-image'):
                 productimage = ProductImages.objects.create(productid=product, productImage=f)
-            messages.success(request, 'Prodect added succesfully')
+            messages.success(request, 'Product added succesfully')
     products = Products.objects.filter(status=1)
     data = []
     for product in products:
@@ -223,10 +225,15 @@ def deleteproduct(request):
 @login_required(login_url='user_login')
 def updateproduct(request):
     if validateupdateproduct(request):
+        seperator = '$$'
+        feature = ''
         try:
+            if "feature" in request.POST:
+                feature = seperator.join(request.POST.getlist('feature'))
             product = Products.objects.get(id=request.POST['productid'])
             product.name=request.POST['editname']
             product.description=request.POST['editdescription']
+            product.features=feature
             product.categoryid=request.POST['producteditcategory']
             product.subcategoryid=request.POST['producteditsubcategory']
             product.count=request.POST['editcount']
@@ -237,10 +244,10 @@ def updateproduct(request):
             messages.success(request, 'Prodect updated succesfully')
         except Exception as e:
             messages.success(request, 'Error: Product not updated. Reason:- '+ str(e))
-    products = Products.objects.all()
+    products = Products.objects.filter(status=1)
     data = []
-    producttemp = {}
     for product in products:
+        producttemp = {}
         category = Category.objects.get(id=product.categoryid)
         producttemp['id'] = product.id
         producttemp['name'] = product.name
@@ -248,7 +255,7 @@ def updateproduct(request):
         producttemp['price'] = product.price
         producttemp['status'] = "Active" if product.status==1 else "Inactive"
         producttemp['categoryname'] = category.name
-    data.append(producttemp)
+        data.append(producttemp)
     context = {'data': data}
     return render(request, 'portal/admin/productlist.html', context)
 
@@ -297,6 +304,7 @@ def loadproductmodal(request):
             producttemp['price'] = detail.price
             producttemp['categoryid'] = detail.categoryid
             producttemp['subcategoryid'] = detail.subcategoryid
+            producttemp['featurelist'] = detail.features.split('$$')
         data.append(producttemp)
         return JsonResponse({"instance": data}, status=200)
 
@@ -304,10 +312,10 @@ def loadproductmodal(request):
 def loadproductaddmodal(request):
     if request.method == 'GET':
         data = []
-        data = getcategory()
+        data = getcategory(request)
         return JsonResponse({"instance": data}, status=200)
 
-@login_required(login_url='user_login')
+# @login_required(login_url='user_login')
 def loadmodalsubcategory(request):
     if request.method == 'GET':
         categoryid = request.GET['categoryid']
@@ -316,7 +324,7 @@ def loadmodalsubcategory(request):
         return JsonResponse({"instance":data}, status=200)
 
 @login_required(login_url='user_login')
-def getcategory():
+def getcategory(request):
     data = []
     categories = Category.objects.filter(status=1)
     for category in categories:
@@ -326,7 +334,7 @@ def getcategory():
         data.append(categorytemp)
     return data
 
-@login_required(login_url='user_login')
+# @login_required(login_url='user_login')
 def getsubcategory(categoryid):
     data = []
     subcategories = SubCategory.objects.filter(parentcategory=categoryid, status=1)
