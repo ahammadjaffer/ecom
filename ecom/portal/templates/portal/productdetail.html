@@ -1,7 +1,7 @@
 {% extends 'portal/base.html' %}
 {% load static %}
 {% block title %}Ecom{% endblock %}
-{% block css %}
+{% block css%}
 <style>
      /********************* Shopping Demo-7 **********************/
 .product-grid7{font-family: "Roboto", Helvetica, Arial, sans-serif;position:relative;z-index:1;margin-bottom: 15px;}
@@ -46,6 +46,11 @@
 <div id="all">
     <div id="content">
         <div class="container">
+          {% for message in messages %}
+            <div class="alert alert-warning" role="alert">
+                {{message}}
+            </div>
+          {% endfor %}
             <div class="row mt-4">
                 <div class="col-lg-3 order-2 order-lg-1">
                   <!--
@@ -62,79 +67,47 @@
                             </div>
                             <div class="card-body ">
                                 <ul class="nav nav-pills flex-column category-menu">
-                                    <li><a href="#" class="nav-link">Mobile Phones <span class="badge badge-secondary">42</span></a>
+                                  {% for cat in companydetails.categories %}
+                                  <li><a href="#" class="nav-link">{{cat.name}} <span class="badge badge-secondary">42</span></a>
                                     <ul class="list-unstyled">
-                                        <li><a href="#" class="nav-link">Nokia</a></li>
-                                        <li><a href="#" class="nav-link">Apple</a></li>
-                                        <li><a href="#" class="nav-link">Samsung</a></li>
-                                        <li><a href="#" class="nav-link">Redmi</a></li>
-                                        <li><a href="#" class="nav-link">Xiomi</a></li>
-                                        <li><a href="#" class="nav-link">Vivo</a></li>
-                                        <li><a href="#" class="nav-link">Oneplus</a></li>
-                                    </ul>
-                                    </li>
-                                    <li><a href="#" class="nav-link ">Accessories  <span class="badge badge-light">123</span></a>
-                                    <ul class="list-unstyled">
-                                        <li><a href="#" class="nav-link">Screen Guard</a></li>
-                                        <li><a href="#" class="nav-link">Mobile Cases</a></li>
-                                        <li><a href="#" class="nav-link">Cables</a></li>
-                                        <li><a href="#" class="nav-link">Charge</a></li>
-                                        <li><a href="#" class="nav-link">Earphones</a></li>
-                                        <li><a href="#" class="nav-link">Bluetooth Earphones</a></li>
-                                        <li><a href="#" class="nav-link">Powerbank</a></li>
-                                    </ul>
-                                    </li>
-                                    <li><a href="#" class="nav-link ">Laptops  <span class="badge badge-light">123</span></a>
-                                    <ul class="list-unstyled">
-                                        <li><a href="#" class="nav-link">HP</a></li>
-                                        <li><a href="#" class="nav-link">Acer</a></li>
-                                        <li><a href="#" class="nav-link">Lenovo</a></li>
-                                        <li><a href="#" class="nav-link">Dell</a></li>
-                                        <li><a href="#" class="nav-link">Apple</a></li>
-                                    </ul>
-                                    </li>
+                                    {% for subcat in companydetails.subcategories %}
+                                      {% if cat.id == subcat.parentcategory_id %}
+                                      <li><a href="#" class="nav-link">{{subcat.name}}</a></li>
+                                      {% endif %}
+                                    {% endfor %}
+                                  </ul>
+                                  </li>
+                                  {% endfor %}
                                 </ul>
                             </div>
                         </div>
                     </div>
                   <!-- *** MENUS AND FILTERS END ***-->
-                  <!-- <div class="banner"><a href="#"><img src="img/banner.jpg" alt="sales 2014" class="img-fluid"></a></div> -->
                 </div>
                 <div class="col-lg-9 order-1 order-lg-2">
                     <div id="productMain" class="row">
                       <div class="col-md-4">
                         <div data-slider-id="1" class="owl-carousel shop-detail-carousel">
-                          <div class="item"> <img src="{% static 'img/productimages/Apple_iPhone_12_Progold-1.webp' %}" alt="" class="img-fluid"></div>
-                          <div class="item"> <img src="{% static 'img/productimages/Apple_iPhone_12_Progold-1.webp' %}" alt="" class="img-fluid"></div>
-                          <div class="item"> <img src="{% static 'img/productimages/Apple_iPhone_12_Progold-1.webp' %}" alt="" class="img-fluid"></div>
+                          {% for image in data.productimages %}
+                          <div class="item"> <img src="/static/img/{{image.image}}" alt="{{image.image}}" class="img-fluid"></div>
+                          {% endfor %}
                         </div>
-                        <!-- <div class="ribbon sale">
-                          <div class="theribbon">SALE</div>
-                          <div class="ribbon-background"></div>
-                        </div> -->
-                        <!-- /.ribbon-->
-                        <!-- <div class="ribbon new">
-                          <div class="theribbon">NEW</div>
-                          <div class="ribbon-background"></div>
-                        </div> -->
-                        <!-- /.ribbon-->
                       </div>
                       <div class="col-md-6">
                         <div class="box">
                           <h2 class="">{{data.name}}</h2>
-                          <!-- <h1 class="text-center">White Blouse Armani</h1> -->
                           <p class="goToDescription"><a href="#details" class="scroll-to">See product details</a></p>
                           <p class="price">₹ {{data.price}}</p>
-                          <p class="buttons"><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</a><a href="basket.html" class="btn btn-outline-primary"><i class="fa fa-shopping-bag"></i> Buy Now</a></p>
+                          <p class="buttons">
+                            <a href="/addtocartdetail/{{data.id}}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                            <a href="basket.html" class="btn btn-outline-primary"><i class="fa fa-shopping-bag"></i> Buy Now</a>
+                          </p>
                           <!-- <p class="text-center buttons"><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</a><a href="basket.html" class="btn btn-outline-primary"><i class="fa fa-heart"></i> Add to wishlist</a></p> -->
                         </div>
                         <div data-slider-id="1" class="owl-thumbs">
                           {% for image in data.productimages %}
-                          <button class="owl-thumb-item"><img src="static/img/{{image.image}}" alt="" class="img-fluid"></button>
+                          <button class="owl-thumb-item"><img src="/static/img/{{image.image}}" alt="" class="img-fluid"></button>
                           {% endfor %}
-                          <!-- <button class="owl-thumb-item"><img src="{% static 'img/productimages/Apple_iPhone_12_Progold-1.webp' %}" alt="" class="img-fluid"></button>
-                          <button class="owl-thumb-item"><img src="{% static 'img/productimages/Apple_iPhone_12_Progold-1.webp' %}" alt="" class="img-fluid"></button>
-                          <button class="owl-thumb-item"><img src="{% static 'img/productimages/Apple_iPhone_12_Progold-1.webp' %}" alt="" class="img-fluid"></button> -->
                         </div>
                       </div>
                     </div>
@@ -147,13 +120,6 @@
                         {% for feature in data.features %}
                         <li>{{feature}}</li>
                         {% endfor %}
-                        <!-- <li>64 GB ROM</li>
-                        <li>15.49 cm (6.1 inch) Super Retina XDR Display</li>
-                        <li>12MP + 12MP | 12MP Front Camera</li>
-                        <li>A14 Bionic Chip with Next Generation Neural Engine Processor</li>
-                        <li>Ceramic Shield</li>
-                        <li>IP68 Water Resistance</li>
-                        <li>All Screen OLED Display</li> -->
                       </ul>
                       <h4><b>Payment details</b></h4>
                       <ul>
@@ -182,11 +148,6 @@
                       <!-- </div> -->
                     </div>
                     <div class="row same-height-row">
-                      <!-- <div class="col-md-3 col-sm-6">
-                        <div class="box same-height">
-                          <h3>You may also like these products</h3>
-                        </div>
-                      </div> -->
                       <div class="col-md-3 col-sm-6">
                         <div class="product-grid7 card">
                             <div class="product-image7">
@@ -276,79 +237,6 @@
                         </div>
                       </div>
                     </div>
-                    <!-- <div class="row same-height-row">
-                      <div class="col-md-3 col-sm-6">
-                        <div class="box same-height">
-                          <h3>Products viewed recently</h3>
-                        </div>
-                      </div>
-                      <div class="col-md-3 col-sm-6">
-                        <div class="product-grid7 card">
-                            <div class="product-image7">
-                                <a href="#">
-                                    <img class="pic-1 mt-3 mb-3" src="/static/img/productimages/Apple_iPhone_12_Progold-1.webp">
-                                    <img class="pic-2 mt-3 mb-3" src="/static/img/productimages/Apple_iPhone_12_Progold-1.webp">
-                                </a>
-                                <ul class="social">
-                                    <li><a href="" class="fa fa-search"></a></li>
-                                    <li><a href="" class="fa fa-shopping-bag"></a></li>
-                                    <li><a href="" class="fa fa-shopping-cart"></a></li>
-                                </ul>
-                                <span class="product-new-label">New</span>
-                            </div>
-                            <div class="product-content">
-                                <h3 class="title"><a href="/viewproductdetail/">Apple iPhone 12 Pro | 256 GB | Gold</a></h3>
-                                <div class="price">₹ 129,900.00
-                                    <span>₹ 130,000.00</span>
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                      <div class="col-md-3 col-sm-6">
-                        <div class="product-grid7 card">
-                            <div class="product-image7">
-                                <a href="#">
-                                    <img class="pic-1 mt-3 mb-3" src="/static/img/productimages/Apple_iPhone_12_Progold-1.webp">
-                                    <img class="pic-2 mt-3 mb-3" src="/static/img/productimages/Apple_iPhone_12_Progold-1.webp">
-                                </a>
-                                <ul class="social">
-                                    <li><a href="" class="fa fa-search"></a></li>
-                                    <li><a href="" class="fa fa-shopping-bag"></a></li>
-                                    <li><a href="" class="fa fa-shopping-cart"></a></li>
-                                </ul>
-                                <span class="product-new-label">New</span>
-                            </div>
-                            <div class="product-content">
-                                <h3 class="title"><a href="/viewproductdetail/">Apple iPhone 12 Pro | 256 GB | Gold</a></h3>
-                                <div class="price">₹ 129,900.00
-                                    <span>₹ 130,000.00</span>
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                      <div class="col-md-3 col-sm-6">
-                        <div class="product-grid7 card">
-                            <div class="product-image7">
-                                <a href="#">
-                                    <img class="pic-1 mt-3 mb-3" src="/static/img/productimages/Apple_iPhone_12_Progold-1.webp">
-                                    <img class="pic-2 mt-3 mb-3" src="/static/img/productimages/Apple_iPhone_12_Progold-1.webp">
-                                </a>
-                                <ul class="social">
-                                    <li><a href="" class="fa fa-search"></a></li>
-                                    <li><a href="" class="fa fa-shopping-bag"></a></li>
-                                    <li><a href="" class="fa fa-shopping-cart"></a></li>
-                                </ul>
-                                <span class="product-new-label">New</span>
-                            </div>
-                            <div class="product-content">
-                                <h3 class="title"><a href="/viewproductdetail/">Apple iPhone 12 Pro | 256 GB | Gold</a></h3>
-                                <div class="price">₹ 129,900.00
-                                    <span>₹ 130,000.00</span>
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                    </div> -->
                   </div>
             </div>
         </div>

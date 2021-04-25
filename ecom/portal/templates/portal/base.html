@@ -173,15 +173,16 @@
               <!-- class active -->
               <!-- <li class="nav-item"><a href="#" class="nav-link">Home</a></li> -->
               {% for cat in companydetails.categories %}
-              <li class="nav-item dropdown menu-medium"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="dropdown-toggle nav-link">{{cat.name}}<b class="caret"></b></a>
+              <li class="nav-item dropdown menu-medium"><a href="javascript:void(0)" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="dropdown-toggle nav-link">{{cat.name}}<b class="caret"></b></a>
                 <ul class="dropdown-menu megamenu">
+                  <li class="nav-item" value="{{cat.id}}"><a href="/viewallproducts/{{cat.id}}/0" class="nav-link">All {{cat.name}}</a></li>
                   <li>
                     <div class="row">
                       <div class="col-md-6 col-lg-3">
                         <ul class="list-unstyled mb-3">
                           {% for subcat in companydetails.subcategories %}
                             {% if cat.id == subcat.parentcategory_id %}
-                            <li class="nav-item" value="{{subcat.id}}"><a href="category.html" class="nav-link">{{subcat.name}}</a></li>
+                            <li class="nav-item" value="{{subcat.id}}"><a href="/viewallproducts/{{cat.id}}/{{subcat.id}}" class="nav-link">{{subcat.name}}</a></li>
                             {% endif %}
                           {% endfor %}
                         </ul>
@@ -404,7 +405,7 @@
                     </div>
                   </div>
                 </form>
-              <div id="basket-overview" class="navbar-collapse collapse d-none d-lg-block"><a href="#" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span>{{companydetails.cartcount}} items in cart</span></a></div>
+              <div id="basket-overview" class="navbar-collapse collapse d-none d-lg-block"><a href="/basket/" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span>{{companydetails.cartcount}} items in cart</span></a></div>
             </div>
           </div>
         </div>
@@ -593,7 +594,6 @@
     <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap4.min.js"></script>
     {% block script %}
-
     {% endblock %}
   </body>
 </html>

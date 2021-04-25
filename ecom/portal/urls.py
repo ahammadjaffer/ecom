@@ -31,9 +31,15 @@ urlpatterns = [
     # path('cancelorderbyadmin/', adminview.cancelorderbyadmin, name='cancelorderbyadmin'),
     # path('deliveredorderdetails/', adminview.deliveredorderdetails, name='deliveredorderdetails'),
     # path('cancelledorderdetails/', adminview.cancelledorderdetails, name='cancelledorderdetails'),
-    path('viewallproducts/', portalview.viewallproducts, name='viewallproducts'),
+    path('viewallproducts/<int:categoryid>/<int:subcategoryid>', portalview.viewallproducts, name='viewallproducts'),
     path('viewproductdetail/<int:productid>/', portalview.viewproductdetail, name='viewproductdetail'),
     path('basket/', portalview.basket, name='basket'),
+    path('addtocartdetail/<int:productid>/', portalview.addtocartdetail, name='addtocartdetail'),
+    path('addtocarthome/<int:productid>/', portalview.addtocarthome, name='addtocarthome'),
+    path('addtocartlist/<int:categoryid>/<int:subcategoryid>/<int:productid>/', portalview.addtocartlist, name='addtocartlist'),
+    path('deletecartitem/', portalview.deletecartitem, name='deletecartitem'),
+    path('checkout/', portalview.checkout, name='checkout'),
+    path('ordersubmit/', portalview.ordersubmit, name='ordersubmit'),
 
     # new admin pages
     path('dashboard/', adminpanelview.dashboard, name='dashboard'),

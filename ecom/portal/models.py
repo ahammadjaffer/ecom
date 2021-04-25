@@ -81,6 +81,7 @@ class Order(models.Model):
     enddate = models.DateTimeField(auto_now=False, null=True)
     billeddate = models.DateTimeField(auto_now=False, null=True)
     orderaccepteddate = models.DateTimeField(auto_now=False, null=True)
+    updateddate = models.DateTimeField(auto_now=False, null=True)
     status = models.IntegerField(blank=False, null=False)
     isfulfilled = models.IntegerField(blank=True, null=True)
     isdeleted =  models.IntegerField(blank=True, null=True)
@@ -93,6 +94,8 @@ class OrderDetails(models.Model):
     quantity = models.IntegerField(blank=False, null=False)
     producttotal = models.IntegerField(blank=False, null=False)
     addeddate = models.DateTimeField(auto_now=True)
+    updateddate = models.DateTimeField(auto_now=False, null=True)
+    status = models.IntegerField(blank=False, null=False)
     
 class Banners(models.Model):
     # t1-top banner 1, t2- top banner 2, t3-top banner 3, b1-bottom banner 1, b2-bottom banner 2, b3-bottom banner 3

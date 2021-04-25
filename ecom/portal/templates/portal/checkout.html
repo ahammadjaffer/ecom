@@ -1,0 +1,506 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+{% block title %}Ecom{% endblock %}
+{% block css %}
+<style>
+     /********************* Shopping Demo-7 **********************/
+.product-grid7{font-family: "Roboto", Helvetica, Arial, sans-serif;position:relative;z-index:1;margin-bottom: 15px;}
+.product-grid7 .product-image7{
+  /* border:1px solid rgba(0,0,0,.1); */
+  overflow:hidden;perspective:1500px;position:relative;transition:all .3s ease 0s;background-color: #fff;}
+.product-grid7 .product-image7 a{display:block}
+.product-grid7 .product-image7 img{width:100%;height:auto}
+.product-grid7 .pic-1{opacity:1;transition:all .5s ease-out 0s}
+.product-grid7 .pic-2{opacity:0;transform:rotateY(-90deg);position:absolute;top:0;left:0;transition:all .5s ease-out 0s}
+.product-grid7:hover .pic-2{opacity:1;transform:rotateY(0)}
+.product-grid7 .social{padding:0;margin:0;list-style:none;position:absolute;bottom:3px;left:-20%;z-index:1;transition:all .5s ease 0s}
+.product-grid7:hover .social{left:17px}
+.product-grid7 .social li a{color:#fff;background-color:#333;font-size:16px;line-height:40px;text-align:center;height:40px;width:40px;margin:15px 0;border-radius:50%;display:block;transition:all .5s ease-in-out}
+/* .product-grid7 .social li a:hover{color:#fff;background-color:#78e08f} */
+.product-grid7 .product-new-label{color:#fff;background-color:#333;padding:5px 10px;border-radius:5px;display:block;position:absolute;top:10px;left:10px}
+.product-grid7 .product-content{text-align:center;padding:20px 0 0}
+.product-grid7 .title{font-size:15px;font-weight:500;text-transform:capitalize;margin:0 0 10px;transition:all .3s ease 0s;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;}
+.product-grid7 .title a{color:#333}
+/* .product-grid7 .title a:hover{color:#78e08f} */
+/* .product-grid7 .rating{color:#78e08f;font-size:12px;padding:0;margin:0 0 10px;list-style:none} */
+.product-grid7 .price{color:#333;font-size:15px;font-family: "Roboto", Helvetica, Arial, sans-serif;font-weight:700;margin-bottom:8px;text-align:center;transition:all .3s}
+.product-grid7 .price span{color:#999;font-size:13px;font-weight:300;text-decoration:line-through;margin-left:7px;display:inline-block}
+@media only screen and (max-width:990px){.product-grid7{margin-bottom:30px}
+}
+@media only screen and (max-width: 576px) {
+    .sidemenucategory {
+        display:none;
+    }
+}
+@media only screen and (min-width: 576px) {
+    .cardmenuheader {
+        display:none;
+    }
+}
+/* for limiting text length */
+.ll {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div id="all">
+    <div id="content">
+        <div class="container">
+            {% for message in messages %}
+                <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS%}alert-success{% elif message.level == DEFAULT_MESSAGE_WARNING.SUCCESS%}alert-warning{% endif %} alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    {{message}}
+                </div>
+            {% endfor %}
+            <form id="orderform" class="form-valid" method="POST" action="/ordersubmit/">
+                {% csrf_token %}
+            <div class="row mt-3">
+                <div id="checkoutaddress" class="col-lg-9 checkout">
+                    <div id="checkout" class="">
+                        <div class="box">
+                            <h2 class="mb-3">Checkout - Address</h2>
+                            <div class="nav flex-column flex-md-row nav-pills text-center">
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center active"> <i class="fa fa-map-marker"></i>Address</a>
+                                <!-- <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center disabled"> <i class="fa fa-truck"></i>Delivery Method</a> -->
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center disabled"> <i class="fa fa-money"></i>Payment Method</a>
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center disabled"> <i class="fa fa-eye"></i>Order Review</a>
+                            </div>
+                            <div class="content py-3">
+                                <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div>
+                                            <label for="firstname">Firstname</label>
+                                            <input id="firstname" name="firstname" type="text" class="form-control" value="{{data.userdetails.firstname}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div>
+                                        <label for="lastname">Lastname</label>
+                                        <input id="lastname" name="lastname" type="text" class="form-control" value="{{data.userdetails.lastname}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <!-- /.row-->
+                                <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div>
+                                        <label for="house">House Name/No.</label>
+                                        <input id="house" name="house"  type="text" class="form-control" value="{{data.userdetails.address}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div>
+                                        <label for="street">Area, Colony, Street</label>
+                                        <input id="street" name="street" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <!-- /.row-->
+                                <div class="row">
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="form-group">
+                                        <div>
+                                        <label for="landmark">Landmark</label>
+                                        <input id="landmark" name="landmark" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="form-group">
+                                        <div>
+                                        <label for="zip">ZIP</label>
+                                        <input id="zip" name="zip" type="text" class="form-control" value="{{data.userdetails.zipcode}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="form-group">
+                                    <label for="state">State</label>
+                                    <select id="state" name="state" class="form-control">
+                                        <option value="Kerala">Kerala</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="form-group">
+                                    <label for="country">Country</label>
+                                    <select id="country" name="country" class="form-control">
+                                        <option value="India">India</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div>
+                                        <label for="phone">Mobile Number</label>
+                                        <input id="phone" name="phone" type="text" class="form-control" value="{{data.userdetails.phone}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div>
+                                        <label for="email">Email</label>
+                                        <input id="email" name="email" type="text" class="form-control" value="{{data.userdetails.email}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="box-footer d-flex justify-content-between"><a href="/basket/" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i>Back to Basket</a>
+                                <button id="btndeliverymethod" class="btn btn-primary">Continue to Delivery Method<i class="fa fa-chevron-right"></i></button>
+                            </div>
+                            <!-- </form> -->
+                        </div>
+                    </div>
+                </div>
+                <!-- <div id="checkoutdelivery" class="col-lg-9 checkout" style="display: none;">
+                    <div id="checkout" class="" >
+                        <div class="box">
+                            <h1>Checkout - Delivery method</h1>
+                            <div class="nav flex-column flex-sm-row nav-pills">
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center address1" id="address1"> <i class="fa fa-map-marker"></i>Address</a>
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center active"> <i class="fa fa-truck"></i>Delivery Method</a>
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center disabled"> <i class="fa fa-money"></i>Payment Method</a>
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center disabled"> <i class="fa fa-eye"></i>Order Review</a>
+                            </div>
+                            <div class="content py-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                <div class="box shipping-method">
+                                    <h4>USPS Next Day</h4>
+                                    <p>Get it right on next day - fastest option possible.</p>
+                                    <div class="box-footer text-center">
+                                    <input type="radio" name="delivery" value="delivery1">
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="col-md-6">
+                                <div class="box shipping-method">
+                                    <h4>USPS Next Day</h4>
+                                    <p>Get it right on next day - fastest option possible.</p>
+                                    <div class="box-footer text-center">
+                                    <input type="radio" name="delivery" value="delivery2">
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="col-md-6">
+                                <div class="box shipping-method">
+                                    <h4>USPS Next Day</h4>
+                                    <p>Get it right on next day - fastest option possible.</p>
+                                    <div class="box-footer text-center">
+                                    <input type="radio" name="delivery" value="delivery3">
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="box-footer d-flex justify-content-between"><a href="checkout1.html" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i>Back to address</a>
+                            <button id="btnpaymentmethod" class="btn btn-primary">Continue to Payment Method<i class="fa fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div id="checkoutpayment" class="col-lg-9 checkout" style="display: none;">
+                    <div id="checkout" class="">
+                        <div class="box">
+                        <!-- <form method="get" action="checkout4.html"> -->
+                            <h1>Checkout - Payment method</h1>
+                            <div class="nav flex-column flex-sm-row nav-pills">
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center address1" id="address2"> <i class="fa fa-map-marker"></i>Address</a>
+                                <!-- <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center delivery2" id="delivery2"> <i class="fa fa-truck"></i>Delivery Method</a> -->
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center active"> <i class="fa fa-money"></i>Payment Method</a>
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center disabled"> <i class="fa fa-eye"></i>Order Review</a>
+                            </div>
+                            <div class="content py-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="box payment-method">
+                                        <h4>Google Pay</h4>
+                                        <p>We like it all.</p>
+                                        <div class="box-footer text-center">
+                                        <input type="radio" name="payment" checked="checked" value="1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
+                                <div class="box payment-method">
+                                    <h4>Payment gateway</h4>
+                                    <p>VISA and Mastercard only.</p>
+                                    <div class="box-footer text-center">
+                                    <input type="radio" name="payment" value="payment2">
+                                    </div>
+                                </div>
+                                </div> -->
+                                <div class="col-md-6">
+                                <div class="box payment-method">
+                                    <h4>Cash on delivery</h4>
+                                    <p>You pay when you get it.</p>
+                                    <div class="box-footer text-center">
+                                    <input type="radio" name="payment" value="2">
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="box-footer d-flex justify-content-between"><a href="checkout2.html" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i>Back to Shipping Method</a>
+                            <button id="btnorderreview" class="btn btn-primary">Continue to Order Review<i class="fa fa-chevron-right"></i></button>
+                            </div>
+                        <!-- </form> -->
+                        </div>
+                    </div>
+                </div>
+                <div id="checkoutorderreview" class="col-lg-9 checkout" style="display: none;">
+                    <div id="checkout" class="" >
+                        <div class="box">
+                        <!-- <form method="get" action="checkout4.html"> -->
+                            <h1>Checkout - Order review</h1>
+                            <div class="nav flex-column flex-sm-row nav-pills">
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center address1" id="address3"> <i class="fa fa-map-marker"></i>Address</a>
+                                <!-- <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center delivery2" id="delivery3"> <i class="fa fa-truck"></i>Delivery Method</a> -->
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center payment3" id="payment3"> <i class="fa fa-money"></i>Payment Method</a>
+                                <a href="javascript:void(0)" class="nav-link flex-sm-fill text-sm-center active"> <i class="fa fa-eye"></i>Order Review</a>
+                            </div>
+                            <div class="content">
+                            <div class="table-responsive">
+                                <table class="table">
+                                <thead>
+                                    <tr>
+                                    <th colspan="2">Product</th>
+                                    <th>Quantity</th>
+                                    <th>Unit price</th>
+                                    <th>Shipment Charge</th>
+                                    <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for items in data.orderdetail %}
+                                    <tr>
+                                        <td><a href="#"><img src="/static/img/{{items.productimage}}" alt="{{items.name}}"></a></td>
+                                        <td class="ll">{{items.name}}</td>
+                                        <td>{{items.productquantity}}</td>
+                                        <td>₹ {{items.price}}</td>
+                                        <td>₹ {{items.shipmentcharge}}</td>
+                                        <td>₹ {{items.producttotal}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4"></td>
+                                        <td colspan="1">Shipping Charge</td>
+                                        <td colspan="2">
+                                            ₹ {{data.shipmentcharge}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4"></th>
+                                        <th colspan="1">Total</th>
+                                        <th colspan="2">
+                                            <p id="grandtotal">₹ {{data.grandtotal}}</p>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                                </table>
+                            </div>
+                            </div>
+                            <div class="box-footer d-flex justify-content-between"><a href="checkout3.html" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i>Back to payment method</a>
+                            <button type="submit" class="btn btn-primary">Place an order<i class="fa fa-chevron-right"></i></button>
+                            </div>
+                        <!-- </form> -->
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="col-lg-3">
+                    <div id="order-summary" class="card">
+                    <div class="card-header">
+                      <h3 class="mt-4 mb-4">Order summary</h3>
+                    </div>
+                    <div class="card-body">
+                      <p class="text-muted">Shipping and additional costs are calculated based on the values you have entered.</p>
+                      <div class="table-responsive">
+                        <table class="table">
+                          <tbody>
+                            <tr>
+                              <td>Order subtotal</td>
+                              <th>₹ {{data.subtotal}}</th>
+                            </tr>
+                            <tr>
+                              <td>Shipping and handling</td>
+                              <th>₹ {{data.shipmentcharge}}</th>
+                            </tr>
+                            <tr class="total">
+                              <td>Total</td>
+                              <th>₹ {{data.grandtotal}}</th>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block script %}
+<script src="{% static 'dashboard/plugins/validation/jquery.validate.min.js' %}"></script>
+<script src="{% static 'dashboard/plugins/validation/jquery.validate-init.js' %}"></script>
+<script type="text/javascript">
+
+jQuery(".form-valid").validate({
+        rules: {
+            "firstname": {
+              required: !0,
+              minlength: 1
+            },
+            "lastname": {
+              required: !0,
+              minlength: 1
+            },
+            "email": {
+              required: !0,
+              email: !0
+            },
+            "phone": {
+              required: !0,
+              minlength: 10
+            },
+            "house": {
+              required: !0,
+              minlength: 1
+            },
+            "street": {
+              required: !0,
+              minlength: 1
+            },
+            "landmark": {
+              required: !0,
+              minlength: 1
+            },
+            "zip": {
+              required: !0,
+              minlength: 1
+            },
+        },
+        messages: {
+            "firstname": {
+                required: "Please enter first name",
+                minlength: "Please enter first name"
+            },
+            "lastname": {
+                required: "Please enter last name",
+                minlength: "Please enter last name"
+            },
+            "email": {
+                required: "Please enter email",
+                minlength: "Please enter email"
+            },
+            "phone": {
+                required: "Please enter phone number",
+                minlength: "Please enter phone number"
+            },
+            "house": {
+                required: "Please enter first name",
+                minlength: "Please enter first name"
+            },
+            "street": {
+                required: "Please enter first name",
+                minlength: "Please enter first name"
+            },
+            "landmark": {
+                required: "Please enter first name",
+                minlength: "Please enter first name"
+            },
+            "zip": {
+                required: "Please enter first name",
+                minlength: "Please enter first name"
+            },
+        },
+
+        ignore: [],
+        errorClass: "invalid-feedback animated fadeInUp",
+        errorElement: "div",
+        errorPlacement: function(e, a) {
+            console.log(e)
+            jQuery(a).parents(".form-group > div").append(e)
+        },
+        highlight: function(e) {
+            jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+        },
+        success: function(e) {
+            jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+        },
+    });
+
+function menuchange() {
+    var displayprop = $(".sidemenucategory").css( "display" );
+    if(displayprop=="none"){
+        $(".sidemenucategory").css( "display", "block" );
+    }
+    else{
+        $(".sidemenucategory").css( "display", "none" );
+    }
+}
+
+$('#btndeliverymethod').click(function () {
+    event.preventDefault();
+    if($("#orderform").valid()) 
+    {
+        $('.checkout').hide()
+        // $('#checkoutdelivery').show()
+        $('#checkoutpayment').show()
+    }
+})
+
+$('#btnpaymentmethod').click(function () {
+    event.preventDefault();
+    $('.checkout').hide()
+    $('#checkoutpayment').show()
+})
+
+$('#btnorderreview').click(function () {
+    event.preventDefault();
+    $('.checkout').hide()
+    $('#checkoutorderreview').show()
+})
+
+$('.address1').click(function () {
+    event.preventDefault();
+    $('.checkout').hide()
+    $('#checkoutaddress').show()
+})
+
+$('.delivery2').click(function () {
+    event.preventDefault();
+    $('.checkout').hide()
+    $('#checkoutdelivery').show()
+})
+
+$('.payment3').click(function () {
+    event.preventDefault();
+    $('.checkout').hide()
+    $('#checkoutpayment').show()
+})
+</script>
+{% endblock %}

@@ -46,6 +46,11 @@
 <div id="all">
     <div id="content">
       <div class="container">
+        {% for message in messages %}
+            <div class="alert alert-warning" role="alert">
+                {{message}}
+            </div>
+          {% endfor %}
         <div class="row mt-4">
           <div class="col-lg-3">
             <!--
@@ -62,120 +67,33 @@
               </div>
               <div class="card-body ">
                 <ul class="nav nav-pills flex-column category-menu">
-                  <li><a href="#" class="nav-link">Mobile Phones <span class="badge badge-secondary">42</span></a>
+                  {% for cat in companydetails.categories %}
+                  <li><a href="/viewallproducts/{{cat.id}}/0" class="nav-link">{{cat.name}} <span hidden class="badge badge-secondary">42</span></a>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="nav-link">Nokia</a></li>
-                        <li><a href="#" class="nav-link">Apple</a></li>
-                        <li><a href="#" class="nav-link">Samsung</a></li>
-                        <li><a href="#" class="nav-link">Redmi</a></li>
-                        <li><a href="#" class="nav-link">Xiomi</a></li>
-                        <li><a href="#" class="nav-link">Vivo</a></li>
-                        <li><a href="#" class="nav-link">Oneplus</a></li>
+                      {% for subcat in companydetails.subcategories %}
+                        {% if cat.id == subcat.parentcategory_id %}
+                        <li><a href="/viewallproducts/{{cat.id}}/{{subcat.id}}" class="nav-link">{{subcat.name}}</a></li>
+                        {% endif %}
+                      {% endfor %}
                     </ul>
                   </li>
-                  <li><a href="#" class="nav-link ">Accessories  <span class="badge badge-light">123</span></a>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="nav-link">Screen Guard</a></li>
-                        <li><a href="#" class="nav-link">Mobile Cases</a></li>
-                        <li><a href="#" class="nav-link">Cables</a></li>
-                        <li><a href="#" class="nav-link">Charge</a></li>
-                        <li><a href="#" class="nav-link">Earphones</a></li>
-                        <li><a href="#" class="nav-link">Bluetooth Earphones</a></li>
-                        <li><a href="#" class="nav-link">Powerbank</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="#" class="nav-link ">Laptops  <span class="badge badge-light">123</span></a>
-                    <ul class="list-unstyled">
-                      <li><a href="#" class="nav-link">HP</a></li>
-                      <li><a href="#" class="nav-link">Acer</a></li>
-                      <li><a href="#" class="nav-link">Lenovo</a></li>
-                      <li><a href="#" class="nav-link">Dell</a></li>
-                      <li><a href="#" class="nav-link">Apple</a></li>
-                    </ul>
-                  </li>
+                  {% endfor %}
                 </ul>
               </div>
             </div>
-            <!-- <div class="card sidebar-menu mb-4">
-              <div class="card-header">
-                <h3 class="h4 card-title">Brands <a href="#" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times-circle"></i> Clear</a></h3>
-              </div>
-              <div class="card-body sidemenucategory">
-                <form>
-                  <div class="form-group">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"> Armani  (10)
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"> Versace  (12)
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"> Carlo Bruni  (15)
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"> Jack Honey  (14)
-                      </label>
-                    </div>
-                  </div>
-                  <button class="btn btn-default btn-sm btn-primary"><i class="fa fa-pencil"></i> Apply</button>
-                </form>
-              </div>
-            </div> -->
-            <!-- <div class="card sidebar-menu mb-4">
-              <div class="card-header">
-                <h3 class="h4 card-title">Colours <a href="#" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times-circle"></i> Clear</a></h3>
-              </div>
-              <div class="card-body sidemenucategory    ">
-                <form>
-                  <div class="form-group">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"><span class="colour white"></span> White (14)
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"><span class="colour blue"></span> Blue (10)
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"><span class="colour green"></span>  Green (20)
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"><span class="colour yellow"></span>  Yellow (13)
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"><span class="colour red"></span>  Red (10)
-                      </label>
-                    </div>
-                  </div>
-                  <button class="btn btn-default btn-sm btn-primary"><i class="fa fa-pencil"></i> Apply</button>
-                </form>
-              </div>
-            </div> -->
         </div>
             <!-- *** MENUS AND FILTERS END ***-->
             <!-- <div class="banner"><a href="#"><img src="img/banner.jpg" alt="sales 2014" class="img-fluid"></a></div> -->
           </div>
           <div class="col-lg-9">
+            
             <div class="box info-bar">
               <div class="row">
-                <div class="col-md-12 col-lg-4 products-showing">Showing <strong>12</strong> of <strong>25</strong> products</div>
+                <div class="col-md-12 col-lg-4 products-showing">Showing <strong>{{detail.numberofproducts}}</strong> of <strong>{{paginator.count}}</strong> products</div>
                 <div class="col-md-12 col-lg-7 products-number-sort">
                   <form class="form-inline d-block d-lg-flex justify-content-between flex-column flex-md-row">
-                    <div class="products-number"><strong>Show</strong><a href="#" class="btn btn-sm btn-primary">12</a><a href="#" class="btn btn-outline-secondary btn-sm">24</a><a href="#" class="btn btn-outline-secondary btn-sm">All</a><span>products</span></div>
+                    <div class="products-number"></div>
+                    <!-- <div class="products-number"><strong>Show</strong><a href="#" class="btn btn-sm btn-primary">12</a><a href="#" class="btn btn-outline-secondary btn-sm">24</a><a href="#" class="btn btn-outline-secondary btn-sm">All</a><span>products</span></div> -->
                     <div class="products-sort-by mt-2 mt-lg-0"><strong>Sort by</strong>
                       <select name="sort-by" class="form-control">
                         <option>Price</option>
@@ -187,133 +105,57 @@
                 </div>
               </div>
             </div>
+
             <div class="row products">
+              {% for product in detail.productlist %}
               <div class="col-lg-3 col-md-6 col-xs-6">
                 <div class="product-grid7 card">
                     <div class="product-image7">
-                        <a href="#">
-                            <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/Apple_iPhone_12_Progold-1.webp' %}">
-                            <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/Apple_iPhone_12_Progold-1.webp' %}">
+                        <a href="/viewproductdetail/{{product.id}}">
+                            <img class="pic-1 mt-3 mb-3" src="/static/img/{{product.image}}">
+                            <img class="pic-2 mt-3 mb-3" src="/static/img/{{product.image}}">
                         </a>
                         <span class="product-new-label">New</span>
                     </div>
                     <div class="product-content">
-                        <h3 class="title"><a href="#">Apple iPhone 12 Pro | 256 GB | Gold</a></h3>
-                        <div class="price">₹ 129,900.00
+                      <input type="hidden" name="productid" value="{{product.id}}">
+                        <h3 class="title"><a href="/viewproductdetail/{{product.id}}">{{product.name}}</a></h3>
+                        <div class="price">₹ {{product.price}}
                             <span>₹ 130,000.00</span>
                         </div>
-                        <p class="buttons"><a href="detail.html" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
-                    </div>
-                </div>
-                <!-- /.product            -->
-              </div>
-              <div class="col-lg-3 col-md-6 col-xs-6">
-                <div class="product-grid7 card">
-                    <div class="product-image7">
-                        <a href="#">
-                            <!-- <img class="pic-1" src="http://bestjquery.com/tutorial/product-grid/demo8/images/img-1.jpg"> -->
-                            <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/iphone-11-128-black1.webp' %}">
-                            <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/iphone-11-128-black1.webp' %}">
-                        </a>
-                        <span class="product-new-label">New</span>
-                    </div>
-                    <div class="product-content">
-                        <h3 class="title"><a href="#">Apple iPhone 11 | Black | 128 GB</a></h3>
-                        <div class="price">₹ 59,900.00
-                            <span>₹ 73,600.00</span>
-                        </div>
-                        <p class="buttons"><a href="detail.html" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
+                        <p class="buttons">
+                          <a href="/viewproductdetail/{{product.id}}" class="btn btn-outline-secondary">View detail</a>
+                          <a href="/addtocartlist/{{detail.categoryid}}/{{detail.subcategoryid}}/{{product.id}}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                        </p>
                     </div>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6 col-xs-6">
-                <div class="product-grid7 card">
-                    <div class="product-image7">
-                        <a href="#">
-                            <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/oneplus-8T-Aquamarine-green-1_0hzk-m2.webp' %}">
-                            <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/oneplus-8T-Aquamarine-green-1_0hzk-m2.webp' %}">
-                        </a>
-                        <span class="product-new-label">New</span>
-                    </div>
-                    <div class="product-content">
-                        <h3 class="title"><a href="#">OnePlus 8T 5G | 8GB RAM/128GB Storage | Aquamarine Green</a></h3>
-                        <div class="price">₹ 42,999.00
-                            <span></span>
-                        </div>
-                        <p class="buttons"><a href="detail.html" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
-                    </div>
-                </div>
-                <!-- /.product            -->
-              </div>
-              <div class="col-lg-3 col-md-6 col-xs-6">
-                <div class="product-grid7 card">
-                    <div class="product-image7">
-                        <a href="#">
-                            <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/Realme-watch1.webp' %}">
-                            <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/Realme-watch1.webp' %}">
-                        </a>
-                    </div>
-                    <div class="product-content">
-                        <h3 class="title"><a href="#">Realme Smart Watch | Black Strap</a></h3>
-                        <div class="price">₹ 2,299.00
-                            <span>₹ 6,999.00</span>
-                        </div>
-                        <p class="buttons"><a href="detail.html" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
-                    </div>
-                </div>
-                <!-- /.product            -->
-              </div>
-              <div class="col-lg-3 col-md-6 col-xs-6">
-                <div class="product-grid7 card">
-                    <div class="product-image7">
-                        <a href="#">
-                            <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/Samsung_Galaxy_S10_Lite-1.webp' %}">
-                            <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/Samsung_Galaxy_S10_Lite-1.webp' %}">
-                        </a>
-                        <span class="product-new-label">New</span>
-                    </div>
-                    <div class="product-content">
-                        <h3 class="title"><a href="#">Samsung Galaxy S10 Lite | 128 GB/8 GB RAM | Prism Black</a></h3>
-                        <div class="price">₹ 32,999.00
-                            <span>₹ 43,999.00</span>
-                        </div>
-                        <p class="buttons"><a href="detail.html" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
-                    </div>
-                </div>
-                <!-- /.product            -->
-              </div>
-              <div class="col-lg-3 col-md-6 col-xs-6">
-                <div class="product-grid7 card">
-                    <div class="product-image7">
-                        <a href="#">
-                            <img class="pic-1 mt-3 mb-3" src="{% static 'img/productimages/toshiba-1.webp' %}">
-                            <img class="pic-2 mt-3 mb-3" src="{% static 'img/productimages/toshiba-1.webp' %}">
-                        </a>
-                        <span class="product-new-label">New</span>
-                    </div>
-                    <div class="product-content">
-                        <h3 class="title"><a href="#">Toshiba Tecra C50 15.6-inch Laptop | Core i3 8th Gen /4GB/1TB/Intel HD Graphics/Windows 10 | Carbon Black</a></h3>
-                        <div class="price">₹ 29,990.00
-                            <span>₹ 70,400.00</span>
-                        </div>
-                        <p class="buttons"><a href="detail.html" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
-                    </div>
-                </div>
-                <!-- /.product            -->
-              </div>
-              <!-- /.products-->
+              {% endfor %}
             </div>
             <div class="pages">
-              <p class="loadMore"><a href="#" class="btn btn-primary btn-lg"><i class="fa fa-chevron-down"></i> Load more</a></p>
+              <!-- <p class="loadMore"><a href="#" class="btn btn-primary btn-lg"><i class="fa fa-chevron-down"></i> Load more</a></p> -->
               <nav aria-label="Page navigation example" class="d-flex justify-content-center">
                 <ul class="pagination">
-                  <li class="page-item"><a href="#" aria-label="Previous" class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
-                  <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                  <li class="page-item"><a href="#" class="page-link">2</a></li>
-                  <li class="page-item"><a href="#" class="page-link">3</a></li>
-                  <li class="page-item"><a href="#" class="page-link">4</a></li>
-                  <li class="page-item"><a href="#" class="page-link">5</a></li>
-                  <li class="page-item"><a href="#" aria-label="Next" class="page-link"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                  <!-- <li class="page-item"><a href="#" aria-label="Previous" class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li> -->
+                  {% if data.has_previous %}
+                    <li class="page-item"><a href="?page={{ data.previous_page_number }}" aria-label="Previous" class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a href="#" aria-label="Previous" class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                  {% endif %}
+                  
+                  {% for i in data.paginator.page_range %}
+                    {% if data.number == i %}
+                      <li class="page-item active"><a href="#" class="page-link">{{ i }}</a></li>
+                    {% else %}
+                      <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  <!-- <li class="page-item"><a href="#" aria-label="Next" class="page-link"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li> -->
+                  {% if data.has_next %}
+                    <li class="page-item"><a href="?page={{ data.next_page_number }}" aria-label="Next" class="page-link"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                  {% else %}
+                    <li class="page-item disabled"><a href="#" aria-label="Next" class="page-link"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                  {% endif %}
                 </ul>
               </nav>
             </div>

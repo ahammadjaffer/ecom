@@ -40,18 +40,33 @@
         display:none;
     }
 }
+/* for limiting text length */
+.ll {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
 </style>
 {% endblock %}
 {% block content %}
 <div id="all">
     <div id="content">
         <div class="container">
+            {% for message in messages %}
+                <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS%}alert-success{% elif message.level == DEFAULT_MESSAGE_WARNING.SUCCESS%}alert-warning{% endif %} alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    {{message}}
+                </div>
+            {% endfor %}
             <div class="row">
                 <div id="basket" class="col-lg-12">
                     <div class="box">
-                        <form method="post" action="checkout1.html">
+                        <form id="checkoutform" method="post" action="">
+                            {% csrf_token %}
                             <h1>Shopping cart</h1>
-                            <p class="text-muted">You currently have 3 item(s) in your cart.</p>
+                            <p class="text-muted">You currently have {{companydetails.cartcount}} item(s) in your cart.</p>
                             <div class="table-responsive">
                                 <table class="table">
                                 <thead>
@@ -59,56 +74,68 @@
                                     <th colspan="2">Product</th>
                                     <th>Quantity</th>
                                     <th>Unit price</th>
-                                    <th>Discount</th>
+                                    <th>Shipment Charge</th>
                                     <th colspan="2">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for items in detail.orderdetail %}
                                     <tr>
-                                    <td><a href="#"><img src="img/detailsquare.jpg" alt="White Blouse Armani"></a></td>
-                                    <td><a href="#">White Blouse Armani</a></td>
+                                    <input type="hidden" id="cartlist" name="cartlist[{{items.orderdetailid}}][orderdetailid]" value="{{items.orderdetailid}}">
+                                    <td><a href="#"><img src="/static/img/{{items.productimage}}" alt="{{items.name}}"></a></td>
+                                    <td class="ll"><a href="#"><span class="" >{{items.name}}</span></a></td>
                                     <td>
-                                        <input type="number" value="2" class="form-control">
+                                        <input type="hidden" id="hdnproductquantity_{{items.productid}}_{{items.orderdetailid}}" name="cartlist[{{items.orderdetailid}}][oldproductquantity]" value="{{items.productquantity}}">
+                                        <input type="number" id="productquantity_{{items.productid}}_{{items.orderdetailid}}" name="cartlist[{{items.orderdetailid}}][productquantity]" value="{{items.productquantity}}" class="form-control" onchange="quantitychanged({{items.productid}}, {{items.orderdetailid}})" min="1">
                                     </td>
-                                    <td>$123.00</td>
-                                    <td>$0.00</td>
-                                    <td>$246.00</td>
-                                    <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                    <td><a href="#"><img src="img/basketsquare.jpg" alt="Black Blouse Armani"></a></td>
-                                    <td><a href="#">Black Blouse Armani</a></td>
                                     <td>
-                                        <input type="number" value="1" class="form-control">
+                                        <input type="hidden" id="hdnprice_{{items.productid}}_{{items.orderdetailid}}" name="cartlist[{{items.orderdetailid}}][price]" value="{{items.price}}">
+                                        <p id="price_{{items.productid}}_{{items.orderdetailid}}">₹ {{items.price}}</p>
                                     </td>
-                                    <td>$200.00</td>
-                                    <td>$0.00</td>
-                                    <td>$200.00</td>
-                                    <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                    <td>
+                                        <input type="hidden" id="hdnshipmentcharge_{{items.productid}}_{{items.orderdetailid}}" name="cartlist[{{items.orderdetailid}}][shipmentcharge]" value="{{items.shipmentcharge}}">
+                                        <p id="shipmentcharge_{{items.productid}}_{{items.orderdetailid}}">₹ {{items.shipmentcharge}}</p>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" id="hdnproducttotal_{{items.productid}}_{{items.orderdetailid}}" name="cartlist[{{items.orderdetailid}}][producttotal]" value="{{items.producttotal}}">
+                                        <p id="producttotal_{{items.productid}}_{{items.orderdetailid}}">₹ {{items.producttotal}}</p>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" onclick="deletecartitem({{items.orderdetailid}})"><i class="fa fa-trash-o"></i></a>
+                                    </td>
                                     </tr>
+                                    {% endfor %}
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <td colspan="4"></td>
                                         <td colspan="1">Shipping Charge</td>
-                                        <td colspan="2">$446.00</td>
+                                        <td colspan="2">
+                                            <input type="hidden" name="shipmentchargetotal" value="{{detail.shipmentcharge}}">
+                                            ₹ {{detail.shipmentcharge}}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th colspan="4"></th>
                                         <th colspan="1">Total</th>
-                                        <th colspan="2">$446.00</th>
+                                        <th colspan="2">
+                                            <input type="hidden" id="hdngrandtotal" name="grandtotal" value="{{detail.grandtotal}}">
+                                            <p id="grandtotal">₹ {{detail.grandtotal}}</p>
+                                        </th>
                                     </tr>
                                 </tfoot>
                                 </table>
                             </div>
                             <!-- /.table-responsive-->
                             <div class="box-footer d-flex justify-content-between flex-column flex-lg-row">
-                                <div class="left"><a href="category.html" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i> Continue shopping</a></div>
+                                <div class="left"><a href="/" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i> Continue shopping</a></div>
                                 <div class="right">
-                                <button class="btn btn-outline-secondary"><i class="fa fa-refresh"></i> Update cart</button>
-                                <button type="submit" class="btn btn-primary">Proceed to checkout <i class="fa fa-chevron-right"></i></button>
+                                <button type="submit" class="btn btn-outline-secondary"><i class="fa fa-refresh"></i> Update cart</button>
+                                <button id="checkout" class="btn btn-primary">Proceed to checkout <i class="fa fa-chevron-right"></i></button>
                                 </div>
                             </div>
+                            <input type="hidden" name="orderid" value="{{detail.orderid}}">
+                            <input type="hidden" name="orderdetailids" value="{{detail.orderdetailids}}">
                         </form>
                     </div>
                 </div>
@@ -120,6 +147,7 @@
 
 {% block script %}
 <script type="text/javascript">
+
 function menuchange() {
     var displayprop = $(".sidemenucategory").css( "display" );
     if(displayprop=="none"){
@@ -129,5 +157,45 @@ function menuchange() {
         $(".sidemenucategory").css( "display", "none" );
     }
 }
+
+function quantitychanged(productid, orderdetailid) {
+    let grandtotal = 0
+    let producttotal = 0
+    let productprice = 0
+    let quantity = 0
+    grandtotal = $('#hdngrandtotal').val()
+    producttotal = $('#hdnproducttotal_'+productid+'_'+orderdetailid).val()
+    productprice = $('#hdnprice_'+productid+'_'+orderdetailid).val()
+    quantity = $('#productquantity_'+productid+'_'+orderdetailid).val()
+    shippingcharge = $('#hdnshipmentcharge_'+productid+'_'+orderdetailid).val()
+    grandtotal = grandtotal-producttotal
+    producttotal = Number(productprice)*Number(quantity)
+    grandtotal = grandtotal+producttotal
+    $('#hdngrandtotal').val(grandtotal)
+    $('#grandtotal').text('₹ '+grandtotal)
+    $('#hdnproducttotal_'+productid+'_'+orderdetailid).val(producttotal)
+    $('#producttotal_'+productid+'_'+orderdetailid).text('₹ '+producttotal)
+    // alert('productid-'+productid+'orderdetailid-'+orderdetailid+'producttotal-'+producttotal+'productprice-'+productprice+'grandtotal-'+grandtotal+'quantity-'+quantity);
+}
+
+function deletecartitem(orderdetailid) {
+    $.ajax(
+        {
+            type:"GET",
+            url: "/deletecartitem/",
+            data:{
+                orderdetailid: orderdetailid,
+            },
+            success: function( data )
+            {
+                window.location.reload();
+            }
+        })
+}
+
+$("#checkout").click(function () {
+    $('#checkoutform').attr('action', '/checkout/'); 
+    $('#checkoutform').submit();
+});
 </script>
 {% endblock %}

@@ -15,7 +15,7 @@ def sitedetails(request):
         user = request.user
         if (not request.user.is_superuser):
             with connection.cursor() as cursor:
-                cursor.execute("select count(od.productid_id) as productcount from portal_order o left join portal_orderdetails od on o.id = od.orderid_id where o.clientid_id=%s and o.status=%s", [user.id, 1])
+                cursor.execute("select count(od.productid_id) as productcount from portal_order o left join portal_orderdetails od on o.id = od.orderid_id where o.clientid_id=%s and o.status=%s", [user.id, 0])
                 row = cursor.fetchone()
                 data['cartcount'] = row[0] if (row != '') else 0
     return {'companydetails':data}
