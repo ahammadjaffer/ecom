@@ -114,13 +114,13 @@
                 {% if not user.is_authenticated %}
                 <li class="list-inline-item"><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
                 <li class="list-inline-item"><a href="/register/">Register</a></li>
-                <li class="list-inline-item"><a href="#">Contact</a></li>
-                <li class="list-inline-item"><a href="#">Recently viewed</a></li>
+                <!-- <li class="list-inline-item"><a href="#">Contact</a></li> -->
                 {% endif %}
                 {% if user.is_authenticated %}
-                <li class="list-inline-item"><a href="#">Hi, {{request.user.first_name}}  {{request.user.last_name}}</a></li>
+                <li class="list-inline-item"><a href="/customeraccount/">Hi, {{request.user.first_name}}  {{request.user.last_name}}</a></li>
                 <li class="list-inline-item"><a href="{% url 'user_logout' %}">Logout</a></li>
                 {% endif %}
+                <li class="list-inline-item"><a href="/contactindex/">Contact Us</a></li>
               </ul>
             </div>
           </div>
@@ -165,7 +165,7 @@
           <div class="container"><a href="{% url 'home' %}" class="navbar-brand home"><img src="{{companydetails.companydetails.imageURL}}" alt="Obaju logo" class="d-none d-md-inline-block"><img src="{{companydetails.companydetails.imageURL}}" alt="Obaju logo" class="d-inline-block d-md-none"><span class="sr-only">Obaju - go to homepage</span></a>
           <div class="navbar-buttons">
             <button type="button" data-toggle="collapse" data-target="#navigation" class="btn btn-outline-secondary navbar-toggler"><span class="sr-only">Toggle navigation</span><i class="fa fa-align-justify"></i></button>
-            <button type="button" data-toggle="collapse" data-target="#search" class="btn btn-outline-secondary navbar-toggler"><span class="sr-only">Toggle search</span><i class="fa fa-search"></i></button><a href="basket.html" class="btn btn-outline-secondary navbar-toggler"><i class="fa fa-shopping-cart"></i></a>
+            <button type="button" data-toggle="collapse" data-target="#search" class="btn btn-outline-secondary navbar-toggler"><span class="sr-only">Toggle search</span><i class="fa fa-search"></i></button><a href="/basket/" class="btn btn-outline-secondary navbar-toggler"><i class="fa fa-shopping-cart"></i></a>
           </div>
           <div id="navigation" class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
@@ -437,14 +437,14 @@
             {% if not user.is_authenticated or user.is_authenticated and not user.is_superuser %}
               <div class="col-lg-10 col-md-10">
                 <h4 class="mb-3">Pages</h4>
-                <a href="text.html">About us</a> | 
-                <a href="text.html">Terms and conditions</a> | 
-                <a href="faq.html">FAQ</a> | 
-                <a href="contact.html">Contact us</a>
+                <a href="#">About us</a> | 
+                <a href="#">Terms and conditions</a> | 
+                <a href="#">FAQ</a> | 
+                <a href="/contactindex/">Contact us</a>
                 <hr>
                 <h4 class="mb-3">User section</h4>
-                <a href="#" data-toggle="modal" data-target="#login-modal">Login</a> | 
-                <a href="register.html">Register</a>
+                <a href="/register/" data-toggle="modal" data-target="#login-modal">Login</a> | 
+                <a href="/register/">Register</a>
                 <br><br>
               </div>
               {% for cat in companydetails.categories %}
@@ -452,7 +452,7 @@
                 <h5>{{cat.name}}</h5>
                 {% for subcat in companydetails.subcategories %}
                   {% if cat.id == subcat.parentcategory_id %}
-                  <a href="#">{{subcat.name}}</a> | 
+                  <a href="/viewallproducts/{{cat.id}}/{{subcat.id}}">{{subcat.name}}</a> | 
                   {% endif %}
                 {% endfor %}
                 <br><br>
@@ -460,7 +460,7 @@
               {% endfor %}
               <div class="col-lg-10 col-md-10">
                 <h4 class="mb-3">Where to find us</h4>
-                <p><strong>{{companydetails.companydetails.name}}</strong><br>{{companydetails.companydetails.address}}<br><strong>India</strong></p><a href="contact.html">Go to contact page</a>
+                <p><strong>{{companydetails.companydetails.name}}</strong><br>{{companydetails.companydetails.address}}<br><strong>India</strong></p><a href="/contactindex/">Go to contact page</a>
                 <hr class="d-block d-md-none">
               </div>
               {% else %}

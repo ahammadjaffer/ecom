@@ -1,0 +1,276 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+{% block title %}Register{% endblock %}
+{% block css %}
+{% endblock %}
+{% block content %}
+
+<div id="all">
+    <div id="content">
+        <div class="container">
+            {% for message in messages %}
+                <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS%}alert-success{% elif message.level == DEFAULT_MESSAGE_WARNING.SUCCESS%}alert-warning{% endif %} alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    {{message}}
+                </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col-lg-9">
+                  <div class="box">
+                    <h1>My account</h1>
+                    <p class="lead">Change your personal details or your password here.</p>
+                    <h3>Change password</h3>
+                    <form id="changepassword" action="/changecustomerpassword/" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label for="password_old">Old password</label>
+                                <input id="password_old" name="password_old" type="password" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="password_1">New password</label>
+                                    <input id="password_1" name="password_1" type="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="password_2">Retype new password</label>
+                                    <input id="password_2" name="password_2" type="password" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" id="save" class="btn btn-primary"><i class="fa fa-save"></i> Save new password</button>
+                            </div>
+                        </div>
+                    </form>
+                    <h3 class="mt-5">Personal details</h3>
+                    <form id="changecustomerdetails" class="form-valid" action="/changecustomerdetails/" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div>
+                                        <label for="firstname">Firstname</label>
+                                        <input id="firstname" name="firstname" type="text" class="form-control" autocomplete="off" value="{{data.userdetails.firstname}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div>
+                                    <label for="lastname">Lastname</label>
+                                    <input id="lastname" name="lastname" type="text" class="form-control" autocomplete="off" value="{{data.userdetails.lastname}}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div>
+                                    <label for="house">House Name/No.</label>
+                                    <input id="house" name="house"  type="text" class="form-control" autocomplete="off" value="{{data.userdetails.housename}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div>
+                                    <label for="street">Area, Colony, Street</label>
+                                    <input id="street" name="street" type="text" class="form-control" autocomplete="off" value="{{data.userdetails.street}}">
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-md-6 col-lg-3">
+                                <div class="form-group">
+                                    <div>
+                                    <label for="landmark">Landmark</label>
+                                    <input id="landmark" name="landmark" type="text" class="form-control" autocomplete="off" value="{{data.userdetails.landmark}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="form-group">
+                                    <div>
+                                    <label for="zip">ZIP</label>
+                                    <input id="zip" name="zip" type="text" class="form-control" autocomplete="off" value="{{data.userdetails.pincode}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="form-group">
+                                <label for="state">State</label>
+                                <select id="state" name="state" class="form-control">
+                                    <option value="Kerala">Kerala</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="form-group">
+                                <label for="country">Country</label>
+                                <select id="country" name="country" class="form-control">
+                                    <option value="India">India</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div>
+                                    <label for="phone">Mobile Number</label>
+                                    <input id="phone" name="phone" type="text" class="form-control" autocomplete="off" value="{{data.userdetails.phone}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div>
+                                    <label for="email">Email</label>
+                                    <input id="email" name="email" type="text" class="form-control" autocomplete="off" value="{{data.userdetails.email}}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button type="button" id="savedetails" class="btn btn-primary"><i class="fa fa-save"></i>Save changes</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+{% endblock%}
+
+{% block script %}
+<script src="{% static 'dashboard/plugins/validation/jquery.validate.min.js' %}"></script>
+<script src="{% static 'dashboard/plugins/validation/jquery.validate-init.js' %}"></script>
+<script type="text/javascript">
+$( document ).ready(function() {
+  $('#save').click(function(){
+        passowrd1 = $('#password_1').val();
+        passowrd2 = $('#password_2').val();
+        if(passowrd1!=passowrd2){
+            alert("Password and Confirm Password do not match!");
+        }
+        else if(CheckPassword(passowrd1)){
+              document.getElementById("changepassword").submit();
+        }
+    });
+
+    $('#savedetails').click(function(){
+        if ($("#changecustomerdetails").valid()){
+            document.getElementById("changecustomerdetails").submit();
+        }
+    });
+
+  function CheckPassword(inputtxt) 
+  { 
+    var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+    if(inputtxt.match(passw)) 
+    { 
+      return true;
+    }
+    else
+    { 
+      alert('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter');
+      return false;
+    }
+  }
+});
+
+jQuery(".form-valid").validate({
+        rules: {
+            "firstname": {
+              required: !0,
+              minlength: 1
+            },
+            "lastname": {
+              required: !0,
+              minlength: 1
+            },
+            "email": {
+              required: !0,
+              email: !0
+            },
+            "phone": {
+              required: !0,
+              minlength: 10
+            },
+            "house": {
+              required: !0,
+              minlength: 1
+            },
+            "street": {
+              required: !0,
+              minlength: 1
+            },
+            "landmark": {
+              required: !0,
+              minlength: 1
+            },
+            "zip": {
+              required: !0,
+              minlength: 1
+            },
+        },
+        messages: {
+            "firstname": {
+                required: "Please enter first name",
+                minlength: "Please enter first name"
+            },
+            "lastname": {
+                required: "Please enter last name",
+                minlength: "Please enter last name"
+            },
+            "email": {
+                required: "Please enter email",
+                minlength: "Please enter email"
+            },
+            "phone": {
+                required: "Please enter phone number",
+                minlength: "Please enter phone number"
+            },
+            "house": {
+                required: "Please enter House Name/No.",
+                minlength: "Please enter House Name/No."
+            },
+            "street": {
+                required: "Please enter Area, Colony, Street",
+                minlength: "Please enter Area, Colony, Street"
+            },
+            "landmark": {
+                required: "Please enter landmark",
+                minlength: "Please enter landmark"
+            },
+            "zip": {
+                required: "Please enter Zip code",
+                minlength: "Please enter Zip code"
+            },
+        },
+
+        ignore: [],
+        errorClass: "invalid-feedback animated fadeInUp",
+        errorElement: "div",
+        errorPlacement: function(e, a) {
+            console.log(e)
+            jQuery(a).parents(".form-group > div").append(e)
+        },
+        highlight: function(e) {
+            jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+        },
+        success: function(e) {
+            jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+        },
+    });
+
+</script>
+{% endblock %}

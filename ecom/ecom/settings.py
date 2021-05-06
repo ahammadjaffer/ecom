@@ -29,7 +29,8 @@ SECRET_KEY = '-yxw$9)c=_+$5=gzwr4ayw-m$pbl9#ry4rf0dj-d4&bqgya^nj'
 DEBUG = True
 
 ALLOWED_HOSTS = ["192.168.43.174",
-                 "127.0.0.1"]
+                 "127.0.0.1",
+                 "ce4e62b48ab0.ngrok.io"]
 
 
 # Application definition
@@ -154,3 +155,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
 # TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
 #     "myapp.processor.foos",
 # )
+
+# mail config
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ahammadjaffer80@gmail.com'
+EMAIL_HOST_PASSWORD = '@M1go1234'

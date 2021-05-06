@@ -1,0 +1,178 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+{% block css %}
+{% endblock %}
+{% block content %}
+
+<div id="all">
+    <div id="content">
+        <div class="container">
+            {% for message in messages %}
+              <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS%}alert-success{% elif message.level == DEFAULT_MESSAGE_WARNING.SUCCESS%}alert-warning{% endif %} alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                </button>
+                {{message}}
+              </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col-lg-9">
+                  <div id="contact" class="box">
+                    <h1>Contact</h1>
+                    <p class="lead">Are you curious about something? Do you have some kind of problem with our products?</p>
+                    <p>Please feel free to contact us, our customer service center is working for you 24/7.</p>
+                    <hr>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <h3><i class="fa fa-map-marker"></i>Address</h3>
+                        <p><strong>{{companydetails.companydetails.name}}</strong><br>{{companydetails.companydetails.address}}<br><strong>India</strong></p>
+                        <!-- <p>13/25 New Avenue<br>New Heaven<br>45Y 73J<br>England<br><strong>Great Britain</strong></p> -->
+                      </div>
+                      <div class="col-md-4">
+                        <h3><i class="fa fa-phone"></i> Call center</h3>
+                        <p class="text-muted">This number is toll free if calling from Great Britain otherwise we advise you to use the electronic form of communication.</p>
+                        <p><strong>{{companydetails.companydetails.phonenumber}}</strong></p>
+                      </div>
+                      <div class="col-md-4">
+                        <h3><i class="fa fa-envelope"></i> Electronic support</h3>
+                        <p class="text-muted">Please feel free to write an email to us or to use our electronic ticketing system.</p>
+                        <ul>
+                          <li><strong>{{companydetails.companydetails.email}}</strong></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <hr>
+                    <h2>Contact form</h2>
+                    <form id="sendemail" class="form-valid" action="/sendemail/" method="POST">
+                      {% csrf_token %}
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <div>
+                              <label for="firstname">Firstname</label>
+                              <input id="firstname" name="firstname" type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <div>
+                              <label for="lastname">Lastname</label>
+                              <input id="lastname" name="lastname" type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <div>
+                              <label for="email">Email</label>
+                              <input id="email" name="email" type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <div>
+                              <label for="subject">Subject</label>
+                              <input id="subject" name="subject" type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <div>
+                              <label for="message">Message</label>
+                              <textarea id="message" name="message" class="form-control"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                        </div>
+                      </div>
+                    </form>
+                    <button id="send" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send message</button>
+                  </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+  </div>
+{% endblock%}
+
+{% block script %}
+<script src="{% static 'dashboard/plugins/validation/jquery.validate.min.js' %}"></script>
+<script src="{% static 'dashboard/plugins/validation/jquery.validate-init.js' %}"></script>
+<script type="text/javascript">
+$( document ).ready(function() {
+
+    $('#send').click(function(){
+        if ($("#sendemail").valid()){
+            document.getElementById("sendemail").submit();
+        }
+    });
+
+});
+
+jQuery(".form-valid").validate({
+        rules: {
+            "firstname": {
+              required: !0,
+              minlength: 1
+            },
+            "lastname": {
+              required: !0,
+              minlength: 1
+            },
+            "email": {
+              required: !0,
+              email: !0
+            },
+            "subject": {
+              required: !0,
+              minlength: 1
+            },
+            "message": {
+              required: !0,
+              minlength: 1
+            },
+        },
+        messages: {
+            "firstname": {
+                required: "Please enter first name",
+                minlength: "Please enter first name"
+            },
+            "lastname": {
+                required: "Please enter last name",
+                minlength: "Please enter last name"
+            },
+            "email": {
+                required: "Please enter email",
+                minlength: "Please enter email"
+            },
+            "subject": {
+                required: "Please enter phone number",
+                minlength: "Please enter phone number"
+            },
+            "message": {
+                required: "Please enter message",
+                minlength: "Please enter message"
+            },
+        },
+
+        ignore: [],
+        errorClass: "invalid-feedback animated fadeInUp",
+        errorElement: "div",
+        errorPlacement: function(e, a) {
+            console.log(e)
+            jQuery(a).parents(".form-group > div").append(e)
+        },
+        highlight: function(e) {
+            jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+        },
+        success: function(e) {
+            jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+        },
+    });
+
+</script>
+{% endblock %}

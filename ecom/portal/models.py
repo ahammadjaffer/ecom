@@ -6,7 +6,11 @@ from django.core.files.storage import FileSystemStorage
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address1 = models.TextField(max_length=500, blank=True, null=True)
+    housename = models.TextField(max_length=500, blank=True, null=True)
+    street = models.TextField(max_length=500, blank=True, null=True)
+    landmark = models.TextField(max_length=500, blank=True, null=True)
+    state = models.TextField(max_length=500, blank=True, null=True)
+    country = models.TextField(max_length=500, blank=True, null=True)
     address2 = models.TextField(max_length=500, blank=True, null=True)
     phonenumber = models.CharField(max_length=13, blank=True, null=True)
     pincode = models.CharField(max_length=200, blank=True, null=True)
@@ -129,3 +133,12 @@ class Companydetails(models.Model):
         except:
             url = ''
         return url
+
+class Zipcodes(models.Model):
+    zipcode = models.CharField(max_length=50, null=False)
+    addeddate = models.DateTimeField(auto_now=False, null=False)
+    enddate = models.DateTimeField(auto_now=False, null=True)
+    status = models.IntegerField(blank=False, null=False)
+
+    def __str__(self):
+        return self.zipcode

@@ -2,6 +2,8 @@ from django.urls import path
 
 from . import views
 from .subviews import adminview, portalview, adminpanelview
+from .subviews import useraccount
+from .subviews import contactform
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -40,6 +42,11 @@ urlpatterns = [
     path('deletecartitem/', portalview.deletecartitem, name='deletecartitem'),
     path('checkout/', portalview.checkout, name='checkout'),
     path('ordersubmit/', portalview.ordersubmit, name='ordersubmit'),
+    path('customeraccount/', useraccount.customeraccount, name='customeraccount'),
+    path('changecustomerpassword/', useraccount.changecustomerpassword, name='changecustomerpassword'),
+    path('changecustomerdetails/', useraccount.changecustomerdetails, name='changecustomerdetails'),
+    path('contactindex/', contactform.contactindex, name='contactindex'),
+    path('sendemail/', contactform.sendemail, name='sendemail'),
 
     # new admin pages
     path('dashboard/', adminpanelview.dashboard, name='dashboard'),
