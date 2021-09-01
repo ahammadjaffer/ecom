@@ -23,31 +23,42 @@ def home(request):
     return render(request, 'portal/home.html', context)
 
 def register(request):
+    validation = []
     if request.method == 'POST':
         firstname = request.POST.get('firstname')
         lastname = request.POST.get('lastname')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         password = request.POST.get('newpassword')
-        with transaction.atomic():
-            userobj = User.objects.create_user(first_name=firstname,
-            last_name=lastname,
-            username=email,
-            email=email,
-            password=password)
-            p = Profile.objects.get(user=userobj)
-            p.phonenumber = phone
-            p.save()
-            messages.success(request, 'Account created succesfully')
-            user = authenticate(request, username=email, password=password)
-            if user is not None:
-                login(request, user)
-                if (user.is_superuser):
-                    return redirect('dashboard')
-                else:
-                    return redirect('home')
+        if User.objects.filter(username=email).exists():
+            validation.append("Username already exists. Try different email.")
+        if User.objects.filter(email=email).exists() and not(validation):
+            validation.append("Email already exists. Try different email.")
+        try:
+            if not(validation):
+                with transaction.atomic():
+                    userobj = User.objects.create_user(first_name=firstname,
+                    last_name=lastname,
+                    username=email,
+                    email=email,
+                    password=password)
+                    p = Profile.objects.get(user=userobj)
+                    p.phonenumber = phone
+                    p.save()
+                    messages.success(request, 'Account created succesfully')
+                    user = authenticate(request, username=email, password=password)
+                    if user is not None:
+                        login(request, user)
+                        if (user.is_superuser):
+                            return redirect('dashboard')
+                        else:
+                            return redirect('home')
+                    else:
+                        messages.info(request, 'Username or Password is incorrect')
             else:
-                messages.info(request, 'Username or Password is incorrect')
+                messages.info(request, validation[0])
+        except Exception as e:
+            messages.error(request, 'Error: '+ str(e))
     context = {}
     return render(request, 'portal/register.html', context)
 

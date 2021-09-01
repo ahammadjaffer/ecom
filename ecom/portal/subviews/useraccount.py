@@ -16,10 +16,10 @@ def customeraccount(request):
     userdetails['email'] = user.email
     clientdetail = User.objects.filter(id=user.id)[0]
     userdetails['phone'] = clientdetail.profile.phonenumber
-    userdetails['housename'] = '' if(clientdetail.profile.housename =='') else clientdetail.profile.housename
-    userdetails['street'] = '' if(clientdetail.profile.street =='') else clientdetail.profile.street
-    userdetails['landmark'] = '' if(clientdetail.profile.landmark =='') else clientdetail.profile.landmark
-    userdetails['pincode'] = clientdetail.profile.pincode
+    userdetails['housename'] = '' if(clientdetail.profile.housename =='' or clientdetail.profile.housename ==None) else clientdetail.profile.housename
+    userdetails['street'] = '' if(clientdetail.profile.street =='' or clientdetail.profile.street ==None) else clientdetail.profile.street
+    userdetails['landmark'] = '' if(clientdetail.profile.landmark =='' or clientdetail.profile.landmark ==None) else clientdetail.profile.landmark
+    userdetails['pincode'] = '' if(clientdetail.profile.pincode =='' or clientdetail.profile.pincode ==None) else clientdetail.profile.pincode
     data['userdetails'] = userdetails
     context={'data':data}
     return render(request, 'portal/customeraccount.html', context)

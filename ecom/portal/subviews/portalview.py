@@ -316,8 +316,10 @@ def checkout(request):
     userdetails['email'] = user.email
     clientdetail = User.objects.filter(id=user.id)[0]
     userdetails['phone'] = clientdetail.profile.phonenumber
-    userdetails['address'] = '' if(clientdetail.profile.address1 !='') else clientdetail.profile.address1
-    userdetails['pincode'] = clientdetail.profile.pincode
+    userdetails['address'] = '' if(clientdetail.profile.housename =='' or clientdetail.profile.housename ==None) else clientdetail.profile.housename
+    userdetails['street'] = '' if(clientdetail.profile.street =='' or clientdetail.profile.street ==None) else clientdetail.profile.street
+    userdetails['landmark'] = '' if(clientdetail.profile.landmark =='' or clientdetail.profile.landmark ==None) else clientdetail.profile.landmark
+    userdetails['zipcode'] = clientdetail.profile.pincode
     data['userdetails'] = userdetails
 
     if (len(order)>0):
