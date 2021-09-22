@@ -199,15 +199,18 @@ $(document).ready(function() {
                         if(value['paymentmode']==1){
                             paymentmode='Cash On Delivery'
                         }
+                        else if(value['paymentmode']==2){
+                            paymentmode='Google Pay'
+                        }
                         else{
                             paymentmode='Other'
                         }
                         if(value['deliverystatus']==4){
-                        deliverystatus = "Cancelled";
-                    }
-                    else{
-                        deliverystatus = "Not available";
-                    }
+                            deliverystatus = "Cancelled";
+                        }
+                        else{
+                            deliverystatus = "Not available";
+                        }
                         $('#orderid').val(value['id']);
                         $('#customername').val(value['customername']);
                         $('#orderdate').val(value['orderdate']);

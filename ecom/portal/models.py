@@ -90,6 +90,7 @@ class Order(models.Model):
     isfulfilled = models.IntegerField(blank=True, null=True)
     isdeleted =  models.IntegerField(blank=True, null=True)
     paymentmode =  models.IntegerField(blank=True, null=True)
+    paymentstatus = models.IntegerField(blank=False, null=False)
     deliveredaddress = models.TextField(max_length=500, blank=True, null=True)
     
 class OrderDetails(models.Model):

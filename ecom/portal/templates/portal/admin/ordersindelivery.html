@@ -227,10 +227,13 @@ function loadupdatemodal(orderid){
             var orderdetailsjson = data["orderdetailsjson"];
             $.each(fields, function(key,value) {
                 if(value['paymentmode']==1){
-                    paymentmode='Cash On Delivery';
+                    paymentmode='Cash On Delivery'
+                }
+                else if(value['paymentmode']==2){
+                    paymentmode='Google Pay'
                 }
                 else{
-                    paymentmode='Other';
+                    paymentmode='Other'
                 }
                 if(value['deliverystatus']==2){
                     deliverystatus = "In Delivery";

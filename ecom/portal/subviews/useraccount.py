@@ -47,7 +47,6 @@ def changecustomerpassword(request):
 def changecustomerdetails(request):
     profiledata=[]
     try:
-        portaluserid = request.user.id
         updateuser = User.objects.get(username=request.user)
         updateuser.first_name = request.POST['firstname']
         updateuser.last_name = request.POST['lastname']

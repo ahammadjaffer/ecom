@@ -79,6 +79,14 @@
                                         </div>
                                         <div class="row">
                                             <div class="col">
+                                                <div class="form-group">
+                                                    <label for="paymentstatus" class="col-form-label ">Payment Status</label>
+                                                    <input type="text" class="form-control col col-sm-12 col-md-6" id="paymentstatus" name="paymentstatus" autocomplete="off"  disabled style="border:none;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
                                                 <div class="form-group ">
                                                     <label for="total" class="col-form-label ">Total</label>
                                                     <!-- <label for="price" id="total" class="col-form-label"></label> -->
@@ -175,13 +183,23 @@
                         if(value['paymentmode']==1){
                             paymentmode='Cash On Delivery'
                         }
+                        else if(value['paymentmode']==2){
+                            paymentmode='Google Pay'
+                        }
                         else{
                             paymentmode='Other'
+                        }
+                        if(value['paymentstatus']==1){
+                            paymentstatus='True'
+                        }
+                        else{
+                            paymentstatus='False'
                         }
                         $('#orderid').val(value['id']);
                         $('#customername').val(value['customername']);
                         $('#orderdate').val(value['orderdate']);
                         $('#paymentmode').val(paymentmode);
+                        $('#paymentstatus').val(paymentstatus);
                         $('#total').val(value['grandtotal']+' ₹');
                         $('#email').val(value['email']);
                         $('#phone').val(value['phonenumber']);

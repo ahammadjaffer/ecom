@@ -399,12 +399,13 @@ def pendingorderdetails(request):
             clientdetail = User.objects.filter(id=detail['clientid_id'])[0]
             ordertemp['id'] = detail['id']
             ordertemp['paymentmode'] = detail['paymentmode']
+            ordertemp['paymentstatus'] = detail['paymentstatus']
             ordertemp['orderdate'] = detail['orderdate']
             ordertemp['grandtotal'] = detail['grandtotal']
             ordertemp['customername'] = clientdetail.first_name+' '+clientdetail.last_name
             ordertemp['email'] = clientdetail.email
             ordertemp['phonenumber'] = clientdetail.profile.phonenumber
-            ordertemp['address'] = clientdetail.profile.address1
+            ordertemp['address'] = clientdetail.profile.housename
             ordertemp['pincode'] = clientdetail.profile.pincode
         data.append(ordertemp)
         return JsonResponse({"instance": data, "orderdetailsjson": orderdetailsjson}, status=200)
@@ -448,7 +449,7 @@ def orderindeliverydetails(request):
             ordertemp['customername'] = clientdetail.first_name+' '+clientdetail.last_name
             ordertemp['email'] = clientdetail.email
             ordertemp['phonenumber'] = clientdetail.profile.phonenumber
-            ordertemp['address'] = clientdetail.profile.address1
+            ordertemp['address'] = clientdetail.profile.housename
             ordertemp['pincode'] = clientdetail.profile.pincode
         data.append(ordertemp)
         return JsonResponse({"instance": data, "orderdetailsjson": orderdetailsjson}, status=200)
@@ -515,7 +516,7 @@ def deliveredorderdetails(request):
             ordertemp['customername'] = clientdetail.first_name+' '+clientdetail.last_name
             ordertemp['email'] = clientdetail.email
             ordertemp['phonenumber'] = clientdetail.profile.phonenumber
-            ordertemp['address'] = clientdetail.profile.address1
+            ordertemp['address'] = clientdetail.profile.housename
             ordertemp['pincode'] = clientdetail.profile.pincode
         data.append(ordertemp)
         return JsonResponse({"instance": data, "orderdetailsjson": orderdetailsjson}, status=200)
@@ -546,7 +547,7 @@ def cancelledorderdetails(request):
             ordertemp['customername'] = clientdetail.first_name+' '+clientdetail.last_name
             ordertemp['email'] = clientdetail.email
             ordertemp['phonenumber'] = clientdetail.profile.phonenumber
-            ordertemp['address'] = clientdetail.profile.address1
+            ordertemp['address'] = clientdetail.profile.housename
             ordertemp['pincode'] = clientdetail.profile.pincode
         data.append(ordertemp)
         return JsonResponse({"instance": data, "orderdetailsjson": orderdetailsjson}, status=200)

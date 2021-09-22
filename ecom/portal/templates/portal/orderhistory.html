@@ -1,0 +1,129 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+{% block title %}Ecom{% endblock %}
+{% block css %}
+<style>
+     /********************* Shopping Demo-7 **********************/
+.product-grid7{font-family: "Roboto", Helvetica, Arial, sans-serif;position:relative;z-index:1;margin-bottom: 15px;}
+.product-grid7 .product-image7{
+  /* border:1px solid rgba(0,0,0,.1); */
+  overflow:hidden;perspective:1500px;position:relative;transition:all .3s ease 0s;background-color: #fff;}
+.product-grid7 .product-image7 a{display:block}
+.product-grid7 .product-image7 img{width:100%;height:auto}
+.product-grid7 .pic-1{opacity:1;transition:all .5s ease-out 0s}
+.product-grid7 .pic-2{opacity:0;transform:rotateY(-90deg);position:absolute;top:0;left:0;transition:all .5s ease-out 0s}
+.product-grid7:hover .pic-2{opacity:1;transform:rotateY(0)}
+.product-grid7 .social{padding:0;margin:0;list-style:none;position:absolute;bottom:3px;left:-20%;z-index:1;transition:all .5s ease 0s}
+.product-grid7:hover .social{left:17px}
+.product-grid7 .social li a{color:#fff;background-color:#333;font-size:16px;line-height:40px;text-align:center;height:40px;width:40px;margin:15px 0;border-radius:50%;display:block;transition:all .5s ease-in-out}
+/* .product-grid7 .social li a:hover{color:#fff;background-color:#78e08f} */
+.product-grid7 .product-new-label{color:#fff;background-color:#333;padding:5px 10px;border-radius:5px;display:block;position:absolute;top:10px;left:10px}
+.product-grid7 .product-content{text-align:center;padding:20px 0 0}
+.product-grid7 .title{font-size:15px;font-weight:500;text-transform:capitalize;margin:0 0 10px;transition:all .3s ease 0s;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;}
+.product-grid7 .title a{color:#333}
+/* .product-grid7 .title a:hover{color:#78e08f} */
+/* .product-grid7 .rating{color:#78e08f;font-size:12px;padding:0;margin:0 0 10px;list-style:none} */
+.product-grid7 .price{color:#333;font-size:15px;font-family: "Roboto", Helvetica, Arial, sans-serif;font-weight:700;margin-bottom:8px;text-align:center;transition:all .3s}
+.product-grid7 .price span{color:#999;font-size:13px;font-weight:300;text-decoration:line-through;margin-left:7px;display:inline-block}
+@media only screen and (max-width:990px){.product-grid7{margin-bottom:30px}
+}
+@media only screen and (max-width: 576px) {
+    .sidemenucategory {
+        display:none;
+    }
+}
+@media only screen and (min-width: 576px) {
+    .cardmenuheader {
+        display:none;
+    }
+}
+/* for limiting text length */
+.ll {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div id="all">
+    <div id="content">
+        <div class="container">
+            {% for message in messages %}
+                <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS%}alert-success{% elif message.level == DEFAULT_MESSAGE_WARNING.SUCCESS%}alert-warning{% endif %} alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    {{message}}
+                </div>
+            {% endfor %}
+            <div class="row">
+                <div id="basket" class="col-lg-12">
+                    <div class="box">
+                        <h1>Order history</h1>
+                            
+                            <div class="content">
+                            <div class="table-responsive">
+                                {% for data in datalist %}
+                                <table class="table">
+                                <thead>
+                                    <tr>
+                                    <th colspan="2">Product</th>
+                                    <th>Quantity</th>
+                                    <th>Unit price</th>
+                                    <th>Shipment Charge</th>
+                                    <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for items in data.orderdetail %}
+                                    <tr>
+                                        <td><a href="#"><img src="/static/img/{{items.productimage}}" alt="{{items.name}}"></a></td>
+                                        <td class="ll">{{items.name}}</td>
+                                        <td>{{items.productquantity}}</td>
+                                        <td>₹ {{items.price}}</td>
+                                        <td>₹ {{items.shipmentcharge}}</td>
+                                        <td>₹ {{items.producttotal}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">
+                                            {% if data.cancancel == True %}
+                                            <a href="/cancelorder/{{data.orderid}}" class="btn btn-outline-secondary">Cancel order</a>
+                                            {% endif %}
+                                        </td>
+                                        <td colspan="1">Shipping Charge</td>
+                                        <td colspan="2">
+                                            ₹ {{data.shipmentcharge}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4"></th>
+                                        <th colspan="1">Total</th>
+                                        <th colspan="2">
+                                            <p id="grandtotal">₹ {{data.grandtotal}}</p>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            {% endfor %}
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block script %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}

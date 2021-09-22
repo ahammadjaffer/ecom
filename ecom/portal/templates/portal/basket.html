@@ -63,10 +63,16 @@
             <div class="row">
                 <div id="basket" class="col-lg-12">
                     <div class="box">
+                        <div class="box-footer d-flex justify-content-between flex-column flex-lg-row">
+                            <div class="left"><h1>Shopping cart</h1></div>
+                            <div class="right">
+                            <!-- <button id="orderhistorybtn" class="btn btn-primary">Order history</button> -->
+                            <a href="/orderhistory/" class="btn btn-primary navbar-btn"><span>Order history</span></a>
+                            </div>
+                        </div>
+                        <p class="text-muted">You currently have {{companydetails.cartcount}} item(s) in your cart.</p>
                         <form id="checkoutform" method="post" action="">
                             {% csrf_token %}
-                            <h1>Shopping cart</h1>
-                            <p class="text-muted">You currently have {{companydetails.cartcount}} item(s) in your cart.</p>
                             <div class="table-responsive">
                                 <table class="table">
                                 <thead>
@@ -131,12 +137,32 @@
                                 <div class="left"><a href="/" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i> Continue shopping</a></div>
                                 <div class="right">
                                 <button type="submit" class="btn btn-outline-secondary"><i class="fa fa-refresh"></i> Update cart</button>
-                                <button id="checkout" class="btn btn-primary">Proceed to checkout <i class="fa fa-chevron-right"></i></button>
+                                <!-- <button id="checkout" class="btn btn-primary">Proceed to checkout <i class="fa fa-chevron-right"></i></button> -->
+                                <input id="checkout" type="button" class="btn btn-primary" value="Proceed to checkout">
+                            </div>
+                        </div>
+                        <input type="hidden" name="orderid" value="{{detail.orderid}}">
+                        <input type="hidden" name="orderdetailids" value="{{detail.orderdetailids}}">
+                    </form>
+                        <div class="modal fade" id="exampleModalCenter">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Your cart is empty. To make an order your cart must contain atleast one item. <br>
+                                        Clicl the button below to view products.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <a href="/" class="btn btn-primary navbar-btn"><span>Continue shopping</span></a>
+                                    </div>
                                 </div>
                             </div>
-                            <input type="hidden" name="orderid" value="{{detail.orderid}}">
-                            <input type="hidden" name="orderdetailids" value="{{detail.orderdetailids}}">
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -194,8 +220,14 @@ function deletecartitem(orderdetailid) {
 }
 
 $("#checkout").click(function () {
-    $('#checkoutform').attr('action', '/checkout/'); 
-    $('#checkoutform').submit();
+    var cartitemscount = "{{ detail.cartitemscount }}";
+    if (cartitemscount > 0) {
+        $('#checkoutform').attr('action', '/checkout/'); 
+        $('#checkoutform').submit();
+    }
+    else {
+        $("#exampleModalCenter").modal();
+    }
 });
 </script>
 {% endblock %}

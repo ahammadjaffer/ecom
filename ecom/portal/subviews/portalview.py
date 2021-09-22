@@ -8,6 +8,8 @@ from django.db import connection
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import DatabaseError, transaction
 from datetime import datetime
+from portal.subviews import constants as cs
+from portal.subviews import emails as em
 from portal.models import *
 
 def viewallproducts(request, categoryid, subcategoryid):
@@ -76,6 +78,7 @@ def basket(request):
     shipmentcharge = 0
     orderdetailids = []
     seperator = ','
+    cartitemscount = 0
     if request.method == 'POST':
         updatecart(request)
     try:
@@ -101,10 +104,12 @@ def basket(request):
                 productimage = getproductimages(request, objproduct.id)
                 carttemp['productimage'] = productimage[1]
                 cartlist.append(carttemp) 
+                cartitemscount += 1
             orderdetailidsstring = seperator.join(orderdetailids)
             detail['orderdetailids'] = orderdetailidsstring
             detail['orderdetail'] = cartlist
             detail['shipmentcharge'] = shipmentcharge
+            detail['cartitemscount'] = cartitemscount
     except Exception as e:
         messages.error(request, 'Error: Reason:- '+ str(e))
     context = {'detail':detail}
@@ -201,9 +206,6 @@ def addtocart(request, productid):
                 # Add order details
                 objorderdetail = OrderDetails(orderid=objorder, productid=objproduct, quantity=quantity, producttotal=producttotal, status=0)
                 objorderdetail.save()
-                # productcount = int(productcount)-1
-                # objproduct.count = productcount
-                # objproduct.save()
                 messages.success(request, 'Added to cart')
             else:
                 order = order[0]
@@ -240,16 +242,11 @@ def addtocart(request, productid):
                     objorderdetail.producttotal = producttotal
                     objorderdetail.updateddate = datetime.now()
                     objorderdetail.save()
-                # Product count updated only when order is made
-                # productcount = int(productcount)-1
-                # objproduct.count = productcount
-                # objproduct.save()
                 messages.success(request, 'Cart updated')
     except Exception as e:
         messages.warning(request, 'Error: Reason:- '+ str(e))
 
 def deletecartitem(request):
-    # orderdetailid = 0
     try:
         with transaction.atomic():
             orderdetailid = request.GET['orderdetailid']
@@ -258,8 +255,9 @@ def deletecartitem(request):
             producttotal = objorderdetail['producttotal']
             updateddate = datetime.now()
             objorder = Order.objects.get(id=orderid)
+            objproduct = Products.objects.filter(id=objorderdetail['productid_id'])[0]
             grandtotal = objorder.grandtotal
-            grandtotal = int(grandtotal)-int(producttotal)
+            grandtotal = int(grandtotal)-(int(producttotal)+int(objproduct.shipmentcharge))
             objorder.grandtotal = grandtotal
             objorder.updateddate = updateddate
             objorder.save()
@@ -302,6 +300,7 @@ def checkout(request):
     subtotal = 0
     user = request.user
     order = Order.objects.filter(clientid=user, enddate__isnull=True, status=0)
+    data['orderid'] = order[0].id
     data['grandtotal'] = order[0].grandtotal
     orderdetails = OrderDetails.objects.filter(orderid=order[0], status=0)
     for orderdetail in orderdetails:
@@ -343,8 +342,126 @@ def checkout(request):
 
 def ordersubmit(request):
     try:
-        print(request.POST)
+        updateddate = datetime.now()
+        userid = request.user.id
+        # transaction start
+        with transaction.atomic():
+            # update user details
+            updateuser = User.objects.get(username=request.user)
+            updateuser.profile.housename = request.POST['house']
+            updateuser.profile.street = request.POST['street']
+            updateuser.profile.landmark = request.POST['landmark']
+            updateuser.profile.state = request.POST['state']
+            updateuser.profile.country = request.POST['country']
+            updateuser.profile.pincode = request.POST['zip']
+            updateuser.save()
+            # update order
+            objorder = Order.objects.get(id=request.POST['orderid'])
+            objorder.status = cs.order_ordered
+            objorder.updateddate = updateddate
+            objorder.paymentmode = request.POST['payment']
+            objorder.paymentstatus = cs.payment_notdone
+            objorder.save()
+            # update product count
+            orderdetails = OrderDetails.objects.filter(orderid=request.POST['orderid'])
+            for orderdetail in orderdetails:
+                quantity = orderdetail.quantity
+                product = Products.objects.get(id=orderdetail.productid.id)
+                if product.count < 1:
+                    raise ValueError(product.name+' is out of stock')
+                else:
+                    productcount = product.count
+                    productcount = int(productcount)-int(quantity)
+                    if productcount < 1:
+                        raise ValueError(product.name+' is not available in requested quantity')
+                    else:
+                        product.count = productcount
+                        product.save()
+            # payment gateway call
+            # email notification call
+            em.ordermade(request, userid)
+
+        # transation commit
         messages.success(request, 'Order placed')
-        return redirect('/')
     except Exception as e:
-        messages.error(request, 'Error: Order failed. Reason:- '+ str(e))
+        messages.error(request, 'Order failed. Reason:- '+ str(e))
+    return redirect('/')
+
+@login_required(login_url='user_login')
+def orderhistory(request):
+    try:
+        user = request.user
+        data = []
+        orders = Order.objects.filter(clientid=user, status__in = (1, 2, 3))
+        if (len(orders)>0):
+            for order in orders:
+                orderdetailids = []
+                cartlist = []
+                seperator = ','
+                shipmentcharge = 0
+                detail = {}
+                detail['orderid'] = order.id
+                detail['grandtotal'] = order.grandtotal
+                if int(order.status) in (1, 2):
+                    detail['cancancel'] = True
+                else:
+                    detail['cancancel'] = False
+                orderdetails = OrderDetails.objects.filter(orderid=order.id, status=0)
+                for orderdetail in orderdetails:
+                    carttemp = {}
+                    objproduct = Products.objects.filter(id=orderdetail.productid.id)[0]
+                    orderdetailids.append(str(orderdetail.id))
+                    carttemp['orderdetailid'] = orderdetail.id
+                    carttemp['producttotal'] = orderdetail.producttotal
+                    carttemp['productquantity'] = orderdetail.quantity
+                    carttemp['productid'] = objproduct.id
+                    carttemp['name'] = objproduct.name
+                    carttemp['price'] = objproduct.price
+                    carttemp['shipmentcharge'] = objproduct.shipmentcharge
+                    shipmentcharge = int(shipmentcharge)+int(objproduct.shipmentcharge)
+                    carttemp['count'] = objproduct.count
+                    productimage = getproductimages(request, objproduct.id)
+                    carttemp['productimage'] = productimage[1]
+                    cartlist.append(carttemp) 
+                orderdetailidsstring = seperator.join(orderdetailids)
+                detail['orderdetailids'] = orderdetailidsstring
+                detail['orderdetail'] = cartlist
+                detail['shipmentcharge'] = shipmentcharge
+                data.append(detail)
+    except Exception as e:
+        messages.error(request, 'Error: Reason:- '+ str(e))
+    context = {'datalist':data}
+    return render(request, 'portal/orderhistory.html', context)
+
+@login_required(login_url='user_login')
+def cancelorder(request, orderid):
+    try:
+        userid = request.user.id
+        updateddate = datetime.now()
+        with transaction.atomic():
+            # update order
+            objorder = Order.objects.get(id=orderid)
+            objorder.status = cs.order_cancelled
+            objorder.updateddate = updateddate
+            objorder.enddate = updateddate
+            objorder.save()
+            orderdetails = OrderDetails.objects.filter(orderid=orderid)
+            for orderdetail in orderdetails:
+                # update each order detail
+                orderdetailsdr = OrderDetails.objects.get(id=orderdetail.id)
+                orderdetailsdr.updateddate = updateddate
+                orderdetailsdr.status = cs.Orderdetail_inactive
+                orderdetailsdr.save()
+                # update product count
+                quantity = orderdetail.quantity
+                product = Products.objects.get(id=orderdetail.productid.id)
+                productcount = product.count
+                productcount = int(productcount)+int(quantity)
+                product.count = productcount
+                product.save()
+            # payment gateway refund
+            em.ordercancelled(request, userid)
+                
+    except Exception as e:
+        messages.error(request, 'Error: Reason:- '+ str(e))
+    return redirect('/orderhistory')

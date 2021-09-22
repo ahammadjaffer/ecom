@@ -207,6 +207,9 @@ function loadupdatemodal(orderid){
                     if(value['paymentmode']==1){
                         paymentmode='Cash On Delivery'
                     }
+                    else if(value['paymentmode']==2){
+                        paymentmode='Google Pay'
+                    }
                     else{
                         paymentmode='Other'
                     }
