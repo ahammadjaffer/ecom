@@ -49,6 +49,8 @@ urlpatterns = [
     path('sendemail/', contactform.sendemail, name='sendemail'),
     path('orderhistory/', portalview.orderhistory, name='orderhistory'),
     path('cancelorder/<int:orderid>/', portalview.cancelorder, name='cancelorder'),
+    path('buynow/<int:productid>/', portalview.buynow, name='buynow'),
+    path('searchproducts/', portalview.searchproducts, name='searchproducts'),
 
     # new admin pages
     path('dashboard/', adminpanelview.dashboard, name='dashboard'),

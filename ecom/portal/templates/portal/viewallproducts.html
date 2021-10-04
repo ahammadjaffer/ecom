@@ -68,7 +68,7 @@
               <div class="card-body ">
                 <ul class="nav nav-pills flex-column category-menu">
                   {% for cat in companydetails.categories %}
-                  <li><a href="/viewallproducts/{{cat.id}}/0" class="nav-link">{{cat.name}} <span hidden class="badge badge-secondary">42</span></a>
+                  <li><a href="/viewallproducts/{{cat.id}}/0" class="nav-link">{{cat.name}} </a>
                     <ul class="list-unstyled">
                       {% for subcat in companydetails.subcategories %}
                         {% if cat.id == subcat.parentcategory_id %}
@@ -125,7 +125,7 @@
                         </div>
                         <p class="buttons">
                           <a href="/viewproductdetail/{{product.id}}" class="btn btn-outline-secondary">View detail</a>
-                          <a href="/addtocartlist/{{detail.categoryid}}/{{detail.subcategoryid}}/{{product.id}}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                          <a href="/addtocartlist/{{detail.categoryid}}/{{detail.subcategoryid}}/{{product.id}}/{{detail.issearch}}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                         </p>
                     </div>
                 </div>

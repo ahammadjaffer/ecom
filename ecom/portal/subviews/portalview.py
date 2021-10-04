@@ -41,6 +41,38 @@ def viewallproducts(request, categoryid, subcategoryid):
     detail['subcategoryid'] = subcategoryid
     detail['productlist'] = productlist
     detail['numberofproducts'] = len(post_list)
+    detail['issearch'] = False
+    context = {"data":post_list, "paginator":paginator, "detail":detail}
+    return render(request, 'portal/viewallproducts.html', context)
+
+def searchproducts(request):
+    detail = {}
+    productlist = []
+    searchvalue = request.POST['searchvalue']
+    objproducts = Products.objects.filter(name__contains=searchvalue).order_by('id')
+    paginator = Paginator(objproducts, 12)
+    page = request.GET.get('page', 1)
+    try:
+        post_list = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        post_list = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        post_list = paginator.page(paginator.num_pages)
+    for product in post_list:
+        tempproduct = {}
+        productimage = getproductimages(request, product.id)
+        tempproduct['id'] = product.id
+        tempproduct['name'] = product.name
+        tempproduct['price'] = product.price
+        tempproduct['image'] = productimage[1]
+        productlist.append(tempproduct)
+    detail['categoryid'] = product.categoryid
+    detail['subcategoryid'] = product.subcategoryid
+    detail['productlist'] = productlist
+    detail['numberofproducts'] = len(post_list)
+    detail['issearch'] = True
     context = {"data":post_list, "paginator":paginator, "detail":detail}
     return render(request, 'portal/viewallproducts.html', context)
 
@@ -161,7 +193,7 @@ def addtocartdetail(request, productid):
         messages.warning(request, 'Error: Reason:- '+ str(e))
     return redirect('/viewproductdetail/'+str(productid)+'/')
 
-def addtocartlist(request, categoryid, subcategoryid, productid):
+def addtocartlist(request, categoryid, subcategoryid, productid, issearch):
     try:
         if request.user.is_authenticated:
             addtocart(request, productid)
@@ -176,7 +208,6 @@ def addtocarthome(request, productid):
     try:
         if request.user.is_authenticated:
             addtocart(request, productid)
-            pass
         else:
             messages.warning(request, 'Please login to use cart')
         return redirect('/')
@@ -292,6 +323,7 @@ def updatecart(request):
     except Exception as e:
         messages.error(request, 'Error: Cart update failed. Reason:- '+ str(e))
 
+@login_required(login_url='user_login')
 def checkout(request):
     data = {}
     userdetails = {}
@@ -340,6 +372,7 @@ def checkout(request):
     context={'data':data}
     return render(request, 'portal/checkout.html', context)
 
+@login_required(login_url='user_login')
 def ordersubmit(request):
     try:
         updateddate = datetime.now()
@@ -465,3 +498,15 @@ def cancelorder(request, orderid):
     except Exception as e:
         messages.error(request, 'Error: Reason:- '+ str(e))
     return redirect('/orderhistory')
+
+@login_required(login_url='user_login')
+def buynow(request, productid):
+    try:
+        print(productid)
+        if request.user.is_authenticated:
+            addtocart(request, productid)
+        else:
+            messages.warning(request, 'Please login to use cart')
+    except Exception as e:
+        messages.error(request, 'Error: Reason:- '+ str(e))
+    return redirect('/checkout/')

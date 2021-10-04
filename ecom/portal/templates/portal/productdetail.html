@@ -68,7 +68,7 @@
                             <div class="card-body ">
                                 <ul class="nav nav-pills flex-column category-menu">
                                   {% for cat in companydetails.categories %}
-                                  <li><a href="#" class="nav-link">{{cat.name}} <span class="badge badge-secondary">42</span></a>
+                                  <li><a href="#" class="nav-link">{{cat.name}} </a>
                                     <ul class="list-unstyled">
                                     {% for subcat in companydetails.subcategories %}
                                       {% if cat.id == subcat.parentcategory_id %}

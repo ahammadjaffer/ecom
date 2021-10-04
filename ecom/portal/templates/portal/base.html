@@ -397,11 +397,12 @@
             <div class="navbar-buttons d-flex justify-content-end">
               <!-- /.nav-collapse-->
               <!-- <div id="search-not-mobile" class="navbar-collapse collapse"></div><a data-toggle="collapse" href="#search" class="btn navbar-btn btn-primary d-none d-lg-inline-block"><span class="sr-only">Toggle search</span><i class="fa fa-search"></i></a> -->
-                <form role="search" class="ml-auto mr-2">
+                <form action="/searchproducts/" method="POST" role="search" class="ml-auto mr-2">
+                  {% csrf_token %}
                   <div class="input-group">
-                    <input type="text" placeholder="Search" class="form-control">
+                    <input type="text" name="searchvalue" placeholder="Search" class="form-control">
                     <div class="input-group-append">
-                      <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                      <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                     </div>
                   </div>
                 </form>
@@ -412,11 +413,12 @@
       </nav>
       <div id="search" class="collapse">
         <div class="container">
-          <form role="search" class="ml-auto">
+          <form  action="/searchproducts/" method="POST" role="search" class="ml-auto">
+            {% csrf_token %}
             <div class="input-group">
-              <input type="text" placeholder="Search" class="form-control">
+              <input type="text" name="searchvalue" placeholder="Search" class="form-control">
               <div class="input-group-append">
-                <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
               </div>
             </div>
           </form>
